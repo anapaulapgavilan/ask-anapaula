@@ -73,7 +73,7 @@ specs/001-ask-ana-paula/
   checklists/requirements.md
 ```
 
-`tasks.md` already exists from the previous planning revision. This command updates design only; `/speckit-tasks` must reconcile its dependency graph and acceptance checks before implementation.
+The current [tasks.md](tasks.md) has been reconciled with this design, including its dependency graph and acceptance checks. These remain planning artifacts, not completed implementation.
 
 ### Source Code (repository root)
 
@@ -147,6 +147,8 @@ The CSS default is static; movement is enabled only when the system allows motio
 ### CI, previews, deployment, and evaluation
 
 All PRs run secretless lint/typecheck/unit/contract/UI checks and a template-capable build. Live evaluations for content, grounding, eval, or dependency changes run only after a maintainer approves the exact revision in a protected GitHub environment. Same-repository changes are not automatically trusted. Never use `pull_request_target` to execute proposed code; never place the API key in build/test job environments.
+
+Playwright separates controlled browser checks (`mocked`) from actual private-preview (`live-preview`) and production (`live-production`) acceptance through explicit file/tag selectors. Ordinary CI and the default browser command select only `mocked`; shared publication tests belong only to live projects, and release smoke tests only to production. Live projects run explicitly in a trusted Codespace with validated target configuration, never as an ordinary PR side effect. Missing configuration fails visibly; acceptance not yet executed remains pending rather than inheriting a mocked pass.
 
 For fork PRs, report live evaluations as blocked, not successful. After review, move the reviewed exact commit to a maintainer-controlled branch for protected evaluation; rerun approval after any new commit. Pin third-party Actions by commit and keep `GITHUB_TOKEN` read-only. Only the evaluation step gets the Anthropic key/model; no Redis production credentials.
 

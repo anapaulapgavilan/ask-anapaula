@@ -38,12 +38,14 @@ Required package scripts to implement:
 | `typecheck` | Strict TypeScript, no emit |
 | `test` | Vitest unit/contracts; explicit excludes for live integrations |
 | `test:integration` | Isolated real Redis boundary/concurrency/expiry tests |
-| `test:e2e` | Playwright browser checks against controlled/mocked chat transport |
+| `test:e2e` | Default selects only the Playwright `mocked` project; explicit live projects require trusted target configuration |
 | `evals` | Real model, real system prompt, case report, nonzero fail/blocked |
 | `build` | Compile knowledge then production Next build |
 | `dev` | Compile knowledge then start Next dev server |
 
 The implementation must supply these scripts or update this runbook to their real names before claiming it is runnable.
+
+Keep the `mocked`, `live-preview`, and `live-production` browser projects explicitly separated by file/tag selectors. Ordinary PR CI selects only `mocked`. In a trusted Codespace, T051 explicitly uses `npm run test:e2e -- --project=live-preview` for real publication acceptance; after deployment, T069 uses `npm run test:e2e -- --project=live-production` for production publication and release smoke checks. Shared publication tests are live-only, not part of the default suite. Validate the actual target and access configuration before either live run; missing setup is a visible failure, and unexecuted acceptance remains pending.
 
 ## 3. Secretless checks
 
