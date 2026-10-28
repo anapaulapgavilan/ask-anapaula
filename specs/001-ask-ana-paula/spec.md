@@ -8,6 +8,14 @@
 
 **Input**: A public bilingual AI avatar of Ana Paula Perez-Gavilan Pliego for recruiters and business-school admissions readers, grounded exclusively in owner-approved, CV-consistent public content.
 
+## Clarifications
+
+### Session 2026-10-28
+
+- Q: How should updated answers be validated before public launch? A: First validate content changes in a private preview; repeat the publication check in production before announcing the site.
+- Q: Where must the first-answer-text performance target pass? A: Both the release preview and production must independently meet it before the site is announced.
+- Q: What happens when an ordinary answer reaches the 150-word ceiling before completion? A: Finish at the last complete sentence within the limit, preserving complete links and any required AI disclosure/contact inside that limit; the visitor can request more detail.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Ask trustworthy career questions (Priority: P1)
@@ -23,7 +31,7 @@ A recruiter asks about Ana Paula's career, education, projects, and motivations 
 1. **Given** a new conversation, **When** the visitor asks a supported question, **Then** the first reply briefly identifies itself as an AI version of Ana Paula and answers in first person using only approved content.
 2. **Given** approved English or Spanish source material, **When** a visitor asks in either supported language, **Then** the answer uses the visitor's language without changing the source facts.
 3. **Given** no approved answer, **When** the visitor asks a question, **Then** the avatar admits the gap and offers the approved public email without guessing.
-4. **Given** an ordinary question, **When** an answer finishes, **Then** it is at most 150 words unless the visitor requested more detail; a more detailed answer still respects the response-size ceiling.
+4. **Given** an ordinary question, **When** an answer finishes, **Then** it is at most 150 words unless the visitor requested more detail; a more detailed answer still respects the response-size ceiling. A length-limited ordinary answer ends at a complete sentence without cutting a link and retains any required AI disclosure/contact within the same 150-word limit.
 5. **Given** an answer related to an approved project, **When** a useful approved link exists, **Then** the avatar may include it or suggest a relevant follow-up question, without inventing a URL.
 
 ---
@@ -88,6 +96,7 @@ Ana Paula edits a knowledge document in the browser, reviews the change, and pub
 3. **Given** a knowledge change, **When** proposed, **Then** automated quality checks and a reviewable site preview are available.
 4. **Given** a valid approved edit committed to the primary branch, **When** publication finishes, **Then** a fresh conversation uses the updated answer without a separate content-upload operation.
 5. **Given** unfilled content or unapproved photo/CV assets, **When** preparing a public launch, **Then** those gaps are explicitly reported and launch is not represented as complete.
+6. **Given** an approved content change before launch, **When** validated, **Then** a private preview first demonstrates the updated answer; after deployment, the production publication check is repeated before the site is announced.
 
 ---
 
@@ -125,6 +134,7 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - Avatar reactions reflect only actual conversation states, not inferred emotions, answer confidence, or a claim that Ana Paula is present live.
 - Animation must not obscure streamed text, steal keyboard focus, flash, or cause repeated screen-reader announcements; status changes have equivalent localized text.
 - Reduced-motion preferences apply on first render; visitors can pause nonessential movement without stopping a response.
+- When ordinary output would exceed 150 words, stop at the last complete sentence within the available word budget; required AI disclosure/contact consume part of that budget and must remain intact. Never show a partial sentence or link as a completed answer; a provider failure may leave partial text only when visibly labeled incomplete.
 
 ## Requirements *(mandatory)*
 
@@ -137,7 +147,7 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - **FR-005**: The FAQ MUST preserve the 14 requested headings and 25 empty extension slots; the stories template MUST offer prompts for 42, show jumping, Del Venado, and CIDE teaching without asserting their details.
 - **FR-006**: Unsupported questions MUST receive an honest statement of missing information and the approved public email; dates, numbers, employers, achievements, links, and motivations MUST NOT be invented.
 - **FR-007**: Confidential employer information, salary, private contact details, political opinions, instruction overrides, and off-topic requests MUST be declined in both supported languages.
-- **FR-008**: Ordinary answers MUST contain at most 150 words; explicit requests for detail MAY exceed that target within the configured response ceiling.
+- **FR-008**: Ordinary answers MUST contain at most 150 words, including any required AI disclosure/contact. If limited, they MUST end at a complete sentence and preserve complete links; mandatory disclosure/contact MUST NOT be dropped to make room for optional answer text. Explicit requests for detail MAY exceed 150 words within the configured response ceiling.
 - **FR-009**: Visitors MUST see incrementally arriving responses and have functioning Stop and Copy answer controls, plus four to six starter questions and a persistent input-adjacent AI disclaimer.
 - **FR-010**: The landing page MUST present approved identity/profile content and CV, chat, and professional-link actions; the four named project cards MUST not expose fake destinations.
 - **FR-011**: The interface MUST provide EN/ES switching, light mode by default, dark mode, keyboard access, accessible labels, visible focus, and WCAG 2.2 AA contrast.
@@ -147,7 +157,7 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - **FR-015**: Retained analytics MUST be limited to sanitized question text, language, timestamp, and a protected one-way network identifier; no raw IP, names, private contact details, or full conversation history may be persisted.
 - **FR-016**: A visible footer MUST disclose question logging, pseudonymous network identification, purpose, and retention; records MUST expire after 30 days by default.
 - **FR-017**: Visitor-visible failures MUST use the standard contact-bearing error in the selected language and MUST NOT expose secrets or internal diagnostics.
-- **FR-018**: An owner-approved browser edit to knowledge committed to the primary branch MUST trigger automatic republication; proposed changes MUST have reviewable previews and automated checks.
+- **FR-018**: An owner-approved browser edit to knowledge committed to the primary branch MUST trigger automatic republication; proposed changes MUST have reviewable previews and automated checks. Before launch, updated-answer behavior MUST first pass in a private preview and then be verified in production before the site is announced.
 - **FR-019**: The service MUST have at least 20 repeatable bilingual checks covering approved facts, unsupported questions, confidentiality, and prompt injection, with explicit required and forbidden answer criteria and a pass/fail report.
 - **FR-020**: Proposed knowledge or grounding-rule changes MUST run credentialed answer checks only in a trusted context; untrusted proposals MUST receive an explicit blocked/pending status, not a false pass.
 - **FR-021**: The public page MUST include a descriptive title, description, and social-sharing image suitable for recruiter links.
@@ -175,14 +185,14 @@ A visitor receives understandable feedback when a conversation is too long, a da
 ### Measurable Outcomes
 
 - **SC-001**: The public release supports all primary actions at 360-pixel mobile and 1,280-pixel desktop widths without horizontal overflow, including keyboard-only use.
-- **SC-002**: A browser edit to one approved FAQ answer appears in a fresh public conversation within 10 minutes of a successful primary-branch publication, under normal hosting availability.
+- **SC-002**: Before launch, an approved FAQ edit appears in a fresh private-preview conversation within 10 minutes of successful preview publication. After production is deployed, a browser edit to an approved FAQ answer appears in a fresh public conversation within 10 minutes of successful primary-branch publication, under normal hosting availability; this production check passes before announcing the site.
 - **SC-003**: All cases in a suite of at least 20 checks pass before release, including Spanish and English confidentiality refusals, off-topic refusal, instruction-override resistance, and unsupported-answer contact guidance.
 - **SC-004**: Review of all evaluation answers finds zero factual assertions unsupported by approved source content; unanswered template prompts produce no invented achievements.
 - **SC-005**: An isolated boundary test allows exactly 25 accepted requests in a rolling day and rejects the 26th; the 20/21-message and 1,000/1,001-character boundaries behave as specified.
 - **SC-006**: Synthetic privacy checks find zero raw IP addresses, names, private contact details, or transcripts in persistent logs, and test records expire according to the stated 30-day policy.
 - **SC-007**: Every tested first reply identifies the AI avatar; every tested unsupported or unavailable-service response provides the approved public contact.
 - **SC-008**: Every primary control is keyboard operable and labeled, and visible text/control contrast meets WCAG 2.2 AA in both themes.
-- **SC-009**: Under a documented normal-network test, at least 9 of 10 valid chat requests begin showing answer text within 5 seconds; ordinary answers stay within 150 words.
+- **SC-009**: Under documented normal-network conditions, the release preview and production MUST each independently show first answer text within 5 seconds for at least 9 of 10 valid chat requests before the site is announced; avatar thinking feedback does not count as answer text. Ordinary answers stay within 150 words; all length-boundary tests preserve complete sentences/links and required AI disclosure/contact within that ceiling.
 - **SC-010**: Every tested trusted proposed change produces quality-check results and a reviewable preview before publication; credential-free untrusted contributions are never reported as having passed live answer checks.
 - **SC-011**: All scripted avatar-state checks pass for pending, streaming, completion, Stop, and error, in both languages and themes at mobile and desktop widths; responding animation never remains active after the request ends.
 - **SC-012**: With reduced motion or animation paused, all nonessential continuous movement stops and every chat action remains usable; a simulated avatar-asset failure still allows a complete written conversation with an accessible fallback notice.
