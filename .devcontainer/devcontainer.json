@@ -1,0 +1,13 @@
+{
+  "name": "Ask Ana Paula",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:24-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {}
+  },
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": { "label": "Private development preview", "visibility": "private" }
+  },
+  "postCreateCommand": "npm ci && npx playwright install --with-deps chromium",
+  "remoteUser": "node"
+}
