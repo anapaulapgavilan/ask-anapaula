@@ -10,7 +10,7 @@ TODO: Ana Paula will supply and approve three sentences about her motivation.
 
 ## How it works
 
-Only the setup page currently exists. The following architecture is planned, not active:
+The setup page and the approved-Markdown compiler exist. The chat API, service integrations, and illustrated avatar in this architecture are still planned, not active:
 
 ```mermaid
 flowchart LR
@@ -63,5 +63,13 @@ Set secrets through Codespaces/Vercel settings, never committed files or command
 - The devcontainer was rebuilt; SSH was absent from the base image and was restored. The explicit `sshd` feature now makes that requirement reproducible.
 - Vercel preview: no deployment is recorded or verified. Once hosting is connected, verify the honest setup message, disabled chat, mobile layout, and absence of unapproved personal assets. A disabled page does not establish private access protection.
 - T008 provisioning is blocked: Anthropic key/model, isolated integration Redis URL/token, and the HMAC secret are missing. Do not enable chat or substitute mocks for real-service acceptance.
+
+### Independent knowledge foundation
+
+- Eight owner-editable templates exist in [content/](content/), including 14 requested FAQ questions and 25 empty extension slots. No personal facts are approved.
+- `npm run content:build` compiles only approved Markdown sections into ignored server-only generated data. It runs before dev, build, and typecheck. The current result has zero approved sections; this is expected, not release readiness.
+- Approval grammar, unsafe markup/URL rejection, deterministic output, fact removal, and failure cleanup are covered by synthetic tests. Synthetic fixtures never become public knowledge.
+- T007/T009/T010 are complete independently. T008 remains blocked, so T011/T012 and all story gates are incomplete; the second implementation milestone is not complete.
+- Vercel verification, once hosting is available: the setup page must remain unchanged and chat disabled with empty templates. Actual FAQ-answer publication cannot be checked until the API, approved content, trusted hosting, and controls exist.
 
 See [implementation tasks](specs/001-ask-ana-paula/tasks.md) for completed work and remaining gates.

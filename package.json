@@ -13,7 +13,11 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run --project=unit",
     "test:integration": "vitest run --project=integration",
-    "test:e2e": "node scripts/run-browser-tests.mjs"
+    "test:e2e": "node scripts/run-browser-tests.mjs",
+    "content:build": "tsx scripts/build-knowledge.ts",
+    "predev": "npm run content:build",
+    "prebuild": "npm run content:build",
+    "pretypecheck": "npm run content:build"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.91",
@@ -30,13 +34,17 @@
     "@axe-core/playwright": "4.14.0",
     "@playwright/test": "1.64.1",
     "@tailwindcss/turbopack": "4.3.3",
+    "@types/mdast": "4.0.4",
     "@types/node": "24.19.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "9.39.5",
     "eslint-config-next": "16.4.3",
+    "remark-parse": "11.0.0",
     "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
+    "unified": "11.0.5",
     "vitest": "5.0.5"
   },
   "type": "module"

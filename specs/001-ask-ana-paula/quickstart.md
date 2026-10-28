@@ -1,6 +1,6 @@
 # Quickstart and Validation Guide: Ask Ana Paula
 
-This is a future implementation runbook, not proof the commands or app already exist. At planning completion the repository contains design documents only. `/speckit-tasks` and `/speckit-implement` must create the scripts and application first.
+Implementation is partial: the setup-only Next.js page, cloud devcontainer, unit/browser tooling, eight content templates, and approved-Markdown compiler exist. `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e`, and `content:build` are implemented; live chat, service integrations, readiness/token/evaluation commands, and actual deployment acceptance are still pending. Commands below describing those pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
 
 ## 1. Prerequisites
 

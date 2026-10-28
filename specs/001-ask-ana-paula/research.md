@@ -10,6 +10,8 @@
 
 **Alternatives considered**: Node 20 fails the observed SDK engine; unpinned `latest` in repeat builds makes evaluations irreproducible; local application installation violates the cloud workflow.
 
+**Implementation evidence**: Cloud scaffolding confirmed the observed Next/AI SDK/Tailwind releases. The actual lint/type/build-compatible tuple pins TypeScript 6.0.3 because typescript-eslint rejects 7.0, and ESLint 9.39.5 because the installed Next plugins exclude ESLint 10 in their peer ranges. The ESLint 9 deprecation is documented rather than hidden by peer overrides. Node 24 devcontainer rebuild and controlled browser/axe checks passed; no real provider or Redis check has run. The AST compiler uses unified 11.0.5 and remark-parse 11.0.0, with tsx 4.23.15 for TypeScript scripts.
+
 **Sources**: [Next installation](https://nextjs.org/docs/app/getting-started/installation), published npm metadata queried with `npm view` in Codespaces. SDK declaration sources below.
 
 ## 2. Streaming and SDK 7 API compatibility

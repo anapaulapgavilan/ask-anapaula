@@ -10,13 +10,15 @@ Build a public bilingual career profile with a streaming, CV-grounded chat and a
 
 The avatar is part of the initial release, not a future enhancement: a local SVG illustration with CSS movement responds to actual chat lifecycle events and respects reduced motion and a pause control. Content and visual assets require owner approval; implementation must not manufacture biography, likeness, or first-person motivations.
 
-This is a design deliverable, not an implemented app or live deployment. No application dependencies were installed and no credentials were created in this phase.
+Planning originally produced design artifacts only. Implementation now includes the verified setup-only cloud scaffold and independent knowledge compiler/templates, not a working chat or live deployment. No service credentials have been provisioned; T008 blocks the remaining foundation gate.
 
 **Revision after clarification**: Incorporates the three owner decisions recorded on 2026-10-28: private-preview then production publication proof, independent latency acceptance in both environments, and sentence-safe 150-word answers preserving mandatory disclosures/contact. Existing SDK research is reused; package compatibility must still be verified during scaffolding.
 
 ## Technical Context
 
 **Language/Version**: Strict TypeScript; Node 24 LTS in Codespaces, CI, and Vercel. Planning-time npm registry resolution in Codespaces: Next.js 16.4.3, TypeScript 7.0.2. Reconfirm stable versions and compatibility during scaffolding; pin exact tested versions and commit the lockfile.
+
+**Verified scaffold compatibility**: Next.js 16.4.3, React 19.3.0, AI SDK 7.0.156 and Tailwind 4.3.3 pass cloud lint/types/build on Node 24 with TypeScript 6.0.3. TypeScript 7 is rejected by the current Next.js ESLint stack; ESLint 9.39.5 satisfies installed plugin peer ranges while ESLint 10 does not. These exact versions are locked; npm marks ESLint 9 deprecated. Provider runtime compatibility and live acceptance remain unverified.
 
 **Primary Dependencies**: Next.js App Router, React compatible with Next, Tailwind CSS 4.3.3; `ai` 7.0.156, `@ai-sdk/anthropic` 4.0.91, `@ai-sdk/react` 4.0.160; Zod; `@upstash/redis` 1.40.0. Small Markdown parsing/build tooling selected during scaffolding. Browser Web Crypto/server Node crypto, no remote animation engine.
 
