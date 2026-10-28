@@ -68,7 +68,7 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
 - Experience: roles, responsibilities, explicitly public metrics only.
 - Projects: four public project descriptions and links.
 - Stories: prompts for 42 Ecole, show jumping, Del Venado, and CIDE teaching.
-- Motivation: why business school, why HBS, goals; do not ghostwrite unverified motivations.
+- Motivation: why business school, timing, goals; do not ghostwrite unverified motivations.
 - FAQ: these 14 exact question headings, empty answers, plus 25 additional TODO slots (39 initial slots total):
   1. Who are you, in 30 seconds?
   2. Why did you study software engineering at 42 after an economics degree at ITAM?
@@ -78,8 +78,8 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
   6. What did you learn from running the AI internship program?
   7. What did show jumping teach you?
   8. What was Del Venado and what did you learn?
-  9. Why an MBA? Why now? Why HBS?
-  10. What do you want to do after HBS?
+  9. Why an MBA? Why now?
+  10. What do you want to do after business school?
   11. What is a failure you learned from?
   12. How do you lead people who are not technical?
   13. What are your weaknesses?
@@ -100,7 +100,7 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
 
 ## Presentation
 
-- Clean editorial professionalism, similar to a Harvard case-study page, not startup styling; mobile-first, light default, dark alternative.
+- Clean editorial professionalism, suitable for a professional admissions profile, not startup styling; mobile-first, light default, dark alternative.
 - Hero: approved photo, name, three-line biography, requested one-liner "Economist (ITAM) · Software engineer (42) · Lead AI Engineer in financial services" pending CV verification.
 - Actions: "Chat with my AI", "Download CV", "GitHub", "LinkedIn".
 - Chat: 4-6 starter chips, incremental text, Stop, Copy answer, visible disclaimer under input.

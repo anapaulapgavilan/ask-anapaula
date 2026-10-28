@@ -6,7 +6,7 @@
 
 **Status**: Draft - ready for planning, not an implemented or published application
 
-**Input**: A public bilingual AI avatar of Ana Paula Perez-Gavilan Pliego for recruiters and admissions readers, especially Harvard Business School, grounded exclusively in owner-approved, CV-consistent public content.
+**Input**: A public bilingual AI avatar of Ana Paula Perez-Gavilan Pliego for recruiters and business-school admissions readers, grounded exclusively in owner-approved, CV-consistent public content.
 
 ## User Scenarios & Testing *(mandatory)*
 
