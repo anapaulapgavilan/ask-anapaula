@@ -17,7 +17,10 @@
     "content:build": "tsx scripts/build-knowledge.ts",
     "predev": "npm run content:build",
     "prebuild": "npm run content:build",
-    "pretypecheck": "npm run content:build"
+    "pretypecheck": "npm run content:build",
+    "content:check": "tsx scripts/check-content.ts",
+    "content:ready": "tsx scripts/check-content.ts --ready",
+    "preevals": "npm run content:build"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.91",

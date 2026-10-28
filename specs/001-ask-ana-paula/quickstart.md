@@ -1,6 +1,6 @@
 # Quickstart and Validation Guide: Ask Ana Paula
 
-Implementation is partial: the setup-only Next.js page, cloud devcontainer, unit/browser tooling, eight content templates, and approved-Markdown compiler exist. `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e`, and `content:build` are implemented; live chat, service integrations, readiness/token/evaluation commands, and actual deployment acceptance are still pending. Commands below describing those pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
+Implementation is partial: the setup-only Next.js page, cloud devcontainer, unit/browser tooling, eight content templates, approved-Markdown compiler, runtime configuration and request validation exist. `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e`, `content:build`, `content:check` and `content:ready` are implemented; readiness correctly fails until public content/assets are approved. Live chat, token/evaluation commands, full service integrations and actual deployment acceptance remain pending. Commands below describing those pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
 
 ## 1. Prerequisites
 
