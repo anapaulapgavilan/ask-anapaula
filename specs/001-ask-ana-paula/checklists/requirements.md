@@ -32,10 +32,11 @@
 ## Notes
 
 - Reviewed against the resolved core specification template; all required headings retained.
-- User stories and FR-001 through FR-024 are covered by acceptance scenarios, edge-case tests, and SC-001 through SC-010.
+- User stories and FR-001 through FR-028 are covered by acceptance scenarios, edge-case tests, and SC-001 through SC-012.
 - Technical choices and required paths are preserved separately in [delivery constraints](../delivery-constraints.md), not treated as user-outcome requirements.
 - Owner resolved repository/workspace scope: new public ask-anapaula repository and Codespace, leaving my-ai-avatar untouched.
 - Owner approved the narrow GitHub Actions secret exception for trusted PR evaluations.
+- Owner selected an illustrated animated avatar for the initial release, alongside written chat, without voice or video. Review covers lifecycle reactions, visual approval, reduced motion, pause controls, mobile layouts, and nonblocking asset-failure notices.
 - Defaults made explicit: 39 initial FAQ slots, 30-day question retention, sanitization before question persistence, template exclusion from grounding, and limits counted across submitted messages.
 - CV and personal claims have not been verified. Content templates remain empty until owner completion and approval; questionnaire-derived assertions are prohibited.
 - No target-repository before/after hooks or adopted constitution were present.

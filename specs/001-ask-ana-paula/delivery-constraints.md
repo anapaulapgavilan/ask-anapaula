@@ -45,6 +45,7 @@ src/app/api/chat/route.ts
 src/app/layout.tsx
 src/components/Hero.tsx
 src/components/Chat.tsx
+src/components/AnimatedAvatar.tsx
 src/components/SuggestedQuestions.tsx
 src/components/ProjectCards.tsx
 src/components/LanguageToggle.tsx
@@ -58,6 +59,8 @@ README.md
 ```
 
 Provide a typed project-link configuration file, location to be selected in planning. Include actual owner-approved photo/CV assets only when supplied; never fabricate binary placeholders or publish the private source CV automatically.
+
+Include owner-approved illustration assets for the animated avatar; choose their format and animation mechanism during planning. Do not invent Ana Paula's likeness or add an external animation service without approval.
 
 ## Content templates
 
@@ -104,6 +107,11 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
 - Hero: approved photo, name, three-line biography, requested one-liner "Economist (ITAM) · Software engineer (42) · Lead AI Engineer in financial services" pending CV verification.
 - Actions: "Chat with my AI", "Download CV", "GitHub", "LinkedIn".
 - Chat: 4-6 starter chips, incremental text, Stop, Copy answer, visible disclaimer under input.
+- Initial release includes an illustrated animated avatar, not only a conversational text interface. Place it beside chat on desktop and immediately above it on mobile, without obscuring messages or controls.
+- `AnimatedAvatar.tsx`: subtle blinking and idle movement; distinct thinking, responding, and error states driven by real chat lifecycle events. Stop and completion return to idle; request failure ends the responding animation and shows the error state.
+- No synthesized voice, lip-sync, realistic video, microphone, or camera integration in this release. Keep the approved hero photo separate from the illustrated avatar.
+- Respect `prefers-reduced-motion` from first render and provide a localized keyboard-accessible pause-animation control. Disable nonessential movement in either mode, preserve static state indicators and localized status text, and avoid flashing or repetitive assistive-technology announcements.
+- Asset or animation failures must preserve usable chat and show an accessible localized notice plus a static or text fallback. Test both themes, mobile/desktop layout, and all lifecycle transitions.
 - Project cards: Mi Inflación, Remesas MX, Unit Economics Lab, Fintech for Lawyers; typed configuration with unavailable placeholders until approved URLs exist.
 - EN/ES interface and suggested questions. Accessible keyboard navigation, aria labels, contrast, focus.
 - Metadata title/description and Open Graph image for LinkedIn/email sharing.
@@ -117,6 +125,7 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
 - Never pass credentials to fork/untrusted PR code or use privileged events to execute untrusted revisions. Surface blocked evaluations explicitly; require trusted approval/execution before release.
 - Missing factual content must not cause fabricated expected answers or a misleading green release gate.
 - Verify actual endpoint input limits, 429 behavior, streaming, and outage handling separately from direct-model answer evaluations.
+- Add UI checks for avatar idle/thinking/responding/error transitions, completion and Stop cleanup, reduced-motion and pause controls, asset failures, keyboard access, and mobile layouts; direct-model evaluations cannot validate animation behavior.
 
 ## Environment example
 
@@ -147,7 +156,7 @@ Approved public email: `anapaulapgavilan@gmail.com`. No actual provider credenti
 1. Scaffold, devcontainer, Tailwind, blank environment example; commit.
 2. Knowledge templates and build-time loader; commit.
 3. System prompt and streaming route; commit.
-4. Hero, chat, starter chips, language toggle, project cards; commit.
+4. Hero, chat, illustrated animated avatar, starter chips, language toggle, project cards, and accessible motion controls; commit.
 5. Rate limiting, logging, errors; commit.
 6. Evaluations and CI; commit.
 7. Recruiter README; commit.

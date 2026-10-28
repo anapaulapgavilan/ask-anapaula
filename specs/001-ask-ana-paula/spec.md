@@ -47,13 +47,13 @@ Ana Paula can make the avatar public without exposing confidential employer info
 
 ---
 
-### User Story 3 - Explore the profile and use accessible chat (Priority: P2)
+### User Story 3 - Meet the animated avatar and use accessible chat (Priority: P2)
 
-A recruiter on a phone or desktop quickly understands the profile, opens approved professional links, and controls a streaming conversation.
+A recruiter on a phone or desktop meets an illustrated, animated representation of Ana Paula alongside the written chat, explores approved professional links, and controls a streaming conversation.
 
 **Why this priority**: The app must be professionally useful to a recruiter without technical knowledge.
 
-**Independent Test**: Navigate the page with a keyboard and a mobile viewport; switch languages and theme; start, stop, and copy a response.
+**Independent Test**: Navigate the page with a keyboard and a mobile viewport; switch languages and theme; start, stop, and copy a response; verify avatar reactions, reduced motion, and animation-failure behavior.
 
 **Acceptance Scenarios**:
 
@@ -66,6 +66,10 @@ A recruiter on a phone or desktop quickly understands the profile, opens approve
 7. **Given** the project section, **When** reviewed, **Then** it contains Mi Inflacion, Remesas MX, Unit Economics Lab, and Fintech for Lawyers; unset links are clearly unavailable rather than clickable placeholders.
 8. **Given** a 360-pixel-wide screen or keyboard-only navigation, **When** all primary controls are used, **Then** no primary content overflows horizontally, focus remains visible, controls are labeled, and contrast meets WCAG 2.2 AA.
 9. **Given** no saved theme preference, **When** the page opens, **Then** light mode is selected and a working dark-mode option is available.
+10. **Given** the conversation area in normal motion mode, **When** it opens, **Then** an owner-approved illustrated avatar is visible alongside the chat, with subtle blinking and idle movement; it does not replace the profile photo or imply a live human connection.
+11. **Given** an accepted question, **When** the response is pending, streaming, or completed, **Then** the avatar respectively shows a thinking reaction, a responding reaction, and its idle state; Stop or an error ends the responding reaction.
+12. **Given** a reduced-motion system preference or the visitor's pause-animation control, **When** the conversation is used, **Then** blinking and continuous movement are disabled while a static illustration and localized text still convey the current response state.
+13. **Given** the illustration or animation cannot load, **When** the visitor asks a question, **Then** the chat and its controls remain usable, a labeled static or text fallback appears, and an accessible notice explains the unavailable animation.
 
 ---
 
@@ -118,6 +122,9 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - Question logs are pseudonymous, not guaranteed anonymous; the disclosure must not claim otherwise.
 - A logging failure is surfaced to the operator without raw question/IP leakage; if generation cannot safely continue, the visitor gets the standard error.
 - Preview environments and production have separate test data and limits; untrusted contributions cannot access evaluation credentials.
+- Avatar reactions reflect only actual conversation states, not inferred emotions, answer confidence, or a claim that Ana Paula is present live.
+- Animation must not obscure streamed text, steal keyboard focus, flash, or cause repeated screen-reader announcements; status changes have equivalent localized text.
+- Reduced-motion preferences apply on first render; visitors can pause nonessential movement without stopping a response.
 
 ## Requirements *(mandatory)*
 
@@ -147,12 +154,17 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - **FR-022**: Recruiter-facing documentation MUST contain a truthful live-link status, chat demonstration, owner-approved motivation, architecture explanation, design rationale, learning reflections, and the requested future roadmap; unavailable items MUST be labeled rather than invented.
 - **FR-023**: All development and application verification MUST occur in the cloud development workspace; no local application build or personal-source upload is required.
 - **FR-024**: Credentials MUST never be committed or exposed to visitors, logs, previews from untrusted changes, or the public content collection.
+- **FR-025**: The initial release MUST include an owner-approved illustrated avatar beside or immediately above the written chat, with subtle blinking and idle movement, plus distinct thinking and responding reactions tied to actual request and streaming states.
+- **FR-026**: The avatar MUST return to idle on completion or Stop and show a non-responding error state on failure; it MUST NOT imply live human presence, synthesize speech, or require microphone/camera access.
+- **FR-027**: Visitors MUST be able to pause nonessential animation using a keyboard-accessible, localized control; reduced-motion system preferences MUST disable continuous movement by default, with equivalent localized text conveying conversation states.
+- **FR-028**: An unavailable illustration or animation MUST produce an accessible notice and static or text fallback without blocking chat; avatar layout and controls MUST remain usable on mobile and in both themes.
 
 ### Key Entities *(include if feature involves data)*
 
 - **Approved knowledge document**: Ordered topic document with completed approved statements, owner-maintained TODO sections, and publication revision; only completed approved material grounds answers.
 - **Profile and project configuration**: Approved name, biography, public email, external links, downloadable CV reference, photo reference, and four project destinations.
 - **Conversation**: Browser-session message sequence, reply status, language context, and first-reply disclosure state; not a persistent server transcript.
+- **Illustrated avatar**: Owner-approved visual representation, idle/thinking/responding/error states, and motion preference; state follows the conversation without adding biographical claims or retaining visitor data.
 - **Usage allowance**: Protected network identifier, accepted-request timestamps, and rolling 24-hour count.
 - **Question record**: Sanitized question, supported language, timestamp, protected network identifier, and 30-day expiration.
 - **Evaluation case**: Question, language, approved fixture or content expectation, required indicators, forbidden indicators, and expected refusal/contact behavior.
@@ -172,6 +184,8 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - **SC-008**: Every primary control is keyboard operable and labeled, and visible text/control contrast meets WCAG 2.2 AA in both themes.
 - **SC-009**: Under a documented normal-network test, at least 9 of 10 valid chat requests begin showing answer text within 5 seconds; ordinary answers stay within 150 words.
 - **SC-010**: Every tested trusted proposed change produces quality-check results and a reviewable preview before publication; credential-free untrusted contributions are never reported as having passed live answer checks.
+- **SC-011**: All scripted avatar-state checks pass for pending, streaming, completion, Stop, and error, in both languages and themes at mobile and desktop widths; responding animation never remains active after the request ends.
+- **SC-012**: With reduced motion or animation paused, all nonessential continuous movement stops and every chat action remains usable; a simulated avatar-asset failure still allows a complete written conversation with an accessible fallback notice.
 
 ## Assumptions
 
@@ -183,6 +197,7 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - The supplied public email is explicitly approved: `anapaulapgavilan@gmail.com`. Approval does not extend to other personal contact details.
 - The requested hero one-liner, project labels, FAQ headings, and story prompts express requested presentation, not independently verified biography.
 - No visitor authentication, administrative dashboard, vector search, voice, or video avatar is included in the initial release.
+- The owner selected an illustrated animated avatar, not a text-only experience, talking avatar, or realistic video avatar. Illustration approval is a launch dependency; voice and video remain future roadmap items.
 - English is the default interface language; replies follow the latest user message language, with the selected interface language as fallback for ambiguous input.
 - Retention defaults to 30 days; logging does not authorize retaining names embedded in user questions. Network identifiers require a keyed one-way protection design rather than a plain, reversible-by-enumeration IP hash.
 - The owner approved a narrow exception to the original secret-location restriction: a GitHub Actions secret may support evaluations for trusted pull requests only.
