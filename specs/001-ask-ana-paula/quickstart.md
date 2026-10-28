@@ -141,4 +141,4 @@ Application test scripts may use a trusted browser/deployment adapter, but must 
 
 Record actual preview URLs and observed results after each stage. If deployment is not configured, report that blocker instead of claiming preview verification.
 
-The existing [task list](tasks.md) still uses the previous schedule. Reconcile it before implementation: early isolated-service provisioning, content approval before preview activation, preview-only predeployment validation, separate production publication/performance verification after deployment, and sentence-safe 150-word tests. Keep task IDs traceable and ensure the diagram agrees with the dependency table.
+The reconciled [task list](tasks.md) schedules T008 service provisioning before integration tests, T048/T049/T062 hosting/content/assets before T060 preview activation, T051/T065/T066 private-preview validation before T068 deployment, and T069 production publication/performance checks before T070 announcement. T014/T017 cover sentence-safe 150-word output. Follow the authoritative dependency table rather than story numbering.

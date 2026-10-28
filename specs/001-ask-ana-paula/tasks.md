@@ -8,6 +8,8 @@
 
 **Organization**: Setup, shared foundation, five prioritized user stories, then release work. Task IDs are stable and sequential. Paths are relative to the repository root; implementation commands execute only in Codespaces or CI, not the local documentation checkout.
 
+**Reconciled revision**: Incorporates the 2026-10-28 clarifications and revised plan. Retains T001-T070 for traceability; numeric/story order is not a global execution order. The explicit prerequisites below govern early provisioning, content approval, private-preview acceptance, production deployment, and postdeployment verification.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - `[P]` marks work on distinct files that can run concurrently in its dependency wave, not permission to ignore prerequisites.
@@ -33,7 +35,7 @@
 **Purpose**: Establish shared content, configuration, and validation primitives before story implementation.
 
 - [ ] T007 [P] Create all eight ordered Markdown TODO templates in `content/00-persona.md`, `content/01-profile.md`, `content/02-experience.md`, `content/03-projects.md`, `content/04-stories.md`, `content/05-motivation.md`, `content/06-faq.md`, and `content/99-boundaries.md`; preserve the 14 revised generic FAQ headings with empty answers plus 25 TODO slots, the required story prompts, and per-section approval grammar without asserting unverified facts.
-- [ ] T008 [P] Define typed public profile/project configuration and server environment validation in `src/config/profile.ts`, `src/config/projects.ts`, and `src/lib/env.ts`; validate the approved public email and HTTPS links, represent missing facts/assets explicitly, require server secrets only when enabled, and default `CHAT_ENABLED` to disabled.
+- [ ] T008 [P] Define typed public profile/project configuration and server environment validation in `src/config/profile.ts`, `src/config/projects.ts`, and `src/lib/env.ts`; validate the approved email/HTTPS links, represent missing facts/assets explicitly, and default `CHAT_ENABLED` to disabled. Provision isolated integration Redis and Codespaces Anthropic/model/HMAC credentials through cloud settings before real service tests; record only non-secret readiness in `README.md`, keep integration data separate from preview/production, and report missing account access as a blocker rather than deferring provisioning to T060.
 - [ ] T009 [P] Add compiler tests in `tests/unit/knowledge.test.ts` and synthetic Markdown fixtures in `tests/fixtures/knowledge/` for the eight-file allowlist, 39 initial FAQ slots, AST section markers, empty/approved/TODO rejection, unsafe HTML/links, deterministic ordering/revisions, removed facts, and fact-free FAQ headings.
 - [ ] T010 Implement the AST-based content compiler and server-only artifact reader in `scripts/build-knowledge.ts` and `src/lib/knowledge.ts`, generating ignored `src/generated/knowledge.json`; exclude unapproved content, emit actionable errors, and pass T009 without runtime filesystem reads or questionnaire imports.
 - [ ] T011 Add `scripts/check-content.ts` and content build/check/readiness commands in `package.json`; run deterministic compilation before dev/build/evals and implement release-readiness failure for required unapproved content/assets without breaking explicitly setup-only secretless builds.
@@ -50,13 +52,13 @@
 ### Tests for User Story 1
 
 - [ ] T013 [P] [US1] Add prompt construction tests in `tests/unit/system-prompt.test.ts` for first-turn disclosure, first-person voice, EN/ES reply selection, unknown-answer contact, trusted boundary precedence, untrusted assistant history, approved links, TODO exclusion, and stable cached-prefix ordering.
-- [ ] T014 [P] [US1] Add stream and SDK compatibility tests in `tests/contracts/chat-stream.test.ts` for typed SDK message conversion, UI SSE framing, 600-token provider cap, 150-word ordinary output across split chunks, explicit detail requests, no reasoning leaks, stop/deadline propagation, and sanitized stream errors.
+- [ ] T014 [P] [US1] Add stream and SDK compatibility tests in `tests/contracts/chat-stream.test.ts` for typed conversion, SSE framing, 600-token cap, and 150/151-word boundaries including trusted first-turn disclosure and contact. Cover complete sentences/links split across chunks, URL/email/decimal/abbreviation punctuation, no fitting sentence, unfinished token-exhausted tails, explicit EN/ES detail requests, valid limited finishes versus incomplete errors, no reasoning leaks, and abort/deadline cleanup.
 - [ ] T015 [P] [US1] Add route contract tests in `tests/contracts/chat-route.test.ts` for method/media/origin/body-size checks, chunked 128-KiB overflow, forged system roles/options, strict transport payload shape, disabled-chat behavior, and no provider calls on rejected input.
 
 ### Implementation for User Story 1
 
-- [ ] T016 [US1] Build trusted instructions and approved-evidence system messages in `src/lib/system-prompt.ts`; enforce confidentiality/off-topic boundaries from day one, first-turn AI disclosure, answer language/contact behavior, no invented facts, and Anthropic ephemeral cache control only on the stable prefix.
-- [ ] T017 [US1] Implement the typed provider/stream adapter in `src/lib/chat-stream.ts` using the installed SDK's supported standalone helpers and awaited conversion, environment model selection, `maxOutputTokens: 600`, no tools/reasoning output, no provider retries, Unicode-aware word limiting, request abort, and deadline cleanup.
+- [ ] T016 [US1] Build trusted instructions and approved-evidence system messages in `src/lib/system-prompt.ts`; enforce confidentiality/off-topic boundaries from day one, answer language, honest unknowns, no invented facts, and ephemeral cache control only on the stable prefix. Define localized trusted first-turn AI disclosure and public-contact guidance, instruct the model not to duplicate it, and keep dynamic first-turn/language guidance outside the reusable cached prefix.
+- [ ] T017 [US1] Implement the typed provider/stream adapter in `src/lib/chat-stream.ts` and shared EN/ES output rules in `src/lib/answer-format.ts` using supported SDK helpers, awaited conversion, env-selected model, `maxOutputTokens: 600`, no tools/reasoning/retries, and abort/deadline cleanup. Reserve exact disclosure/contact word costs within 150 words, emit only complete fitting buffered sentences/links, discard unfinished/over-budget tails, and use truthful guidance-only completion if no sentence fits; explicit tested detail requests may exceed 150 words. Distinguish model text from trusted notices for timing and reuse the formatter in evaluations.
 - [ ] T018 [US1] Implement the Node-runtime endpoint in `src/app/api/chat/route.ts` with bounded body reads, strict schema/media/origin checks, canonical trusted deployment-origin configuration, `no-store` streaming, safe localized errors, and an explicit disabled gate until US2/US5 controls are wired.
 - [ ] T019 [US1] Implement trusted prefix token counting in `scripts/check-tokens.ts` and wire `content:tokens` in `package.json`; use the actual configured model, fail at 30,000 or more tokens, and distinguish missing credentials from a successful secretless check.
 - [ ] T020 [US1] Add and execute a trusted controlled-provider smoke test in `tests/integration/anthropic.test.ts` for real message compatibility, bilingual disclosure/unknown contact, stop/deadline behavior, and repeated-prefix cache usage; report explicitly uncached if below the configured model minimum and never send private source content.
@@ -78,7 +80,7 @@
 ### Implementation for User Story 2
 
 - [ ] T024 [US2] Implement shared trusted-IP canonicalization and domain-separated keyed identifiers in `src/lib/network-identity.ts`; validate `IP_HASH_SECRET`, reject invalid/missing attribution, trust only Vercel-controlled deployment headers, and expose an explicit synthetic dependency seam for tests rather than a production bypass.
-- [ ] T025 [US2] Create the reviewed EN/ES identifier-free logging catalog in `src/config/question-catalog.ts` and implement `src/lib/log.ts` with exact normalized catalog text or `question: null`, language/time/analytics HMAC only, atomic 30-day expiry, and explicit failures without input-bearing diagnostics.
+- [ ] T025 [US2] Create the reviewed EN/ES identifier-free catalog in `src/config/question-catalog.ts`, introduce the shared environment-scoped client in `src/lib/redis.ts`, and implement `src/lib/log.ts` with exact catalog text or `question: null`, language/time/analytics HMAC only, atomic 30-day expiry, and explicit safe failures; use T008 integration credentials, never provision services as a side effect of logging or tests.
 - [ ] T026 [US2] Extend `src/lib/system-prompt.ts` and `tests/unit/system-prompt.test.ts` against T022 so sensitive-topic refusals are mandatory even with empty boundary templates or malicious instruction-like evidence; do not claim unit prompt inspection proves model compliance.
 - [ ] T027 [US2] Add real Redis persistence tests in `tests/integration/log.test.ts` using an isolated namespace to inspect field shape, HMAC domain separation, TTL, omission of synthetic identifiers, and storage failure behavior; delete only test-created keys after execution.
 - [ ] T028 [US2] Add localized AI/privacy disclosures in `src/components/Disclaimer.tsx` and `src/components/PrivacyFooter.tsx`, distinguishing pseudonymous application records from provider processing/retention, linking approved contact, and explaining safe-question text omission and 30-day retention.
@@ -116,7 +118,7 @@
 
 **Goal**: Provide browser-editable approved knowledge, trusted answer evaluations, and automatic reviewed publication.
 
-**Independent Test**: On a configured trusted deployment, edit a safe approved FAQ answer in the GitHub browser editor, review its PR preview/checks, merge, and confirm a fresh conversation uses the answer within 10 minutes of successful publication.
+**Independent Test**: Before production, edit an approved FAQ through GitHub and verify its update/removal in an access-protected trusted PR preview within 10 minutes of successful preview publication (T051). After deployment, separately repeat browser edit/PR/merge/redeploy/removal on production before announcement (T069); production success is never a predeployment prerequisite.
 
 ### Tests for User Story 4
 
@@ -126,15 +128,15 @@
 ### Implementation for User Story 4
 
 - [ ] T044 [US4] Define at least 20 balanced bilingual cases in `evals/cases.json` with IDs, categories, questions, `must_include`, `must_not_include`, and approved source references; include the required revenue/instruction-override/unknown prompts, and mark unsupported real-fact fixtures blocked instead of inventing facts from TODO premises.
-- [ ] T045 [US4] Implement `evals/run-evals.ts` using the real compiled system prompt and environment model, bounded calls, pass/fail/blocked table, source/language/contact/disclosure/word checks, revision/model metadata, and nonzero failure on any blocked/missing-credential case; wire `evals` in `package.json`.
+- [ ] T045 [US4] Implement `evals/run-evals.ts` using the real compiled system prompt, configured model, and shared `src/lib/answer-format.ts` output policy; bound calls, print pass/fail/blocked and revision/model metadata, verify source/language/contact/disclosure and complete 150-word ordinary answers, and fail nonzero on any blocked/missing-credential case; wire `evals` in `package.json` and evaluate the same visible text policy as the endpoint.
 - [ ] T046 [US4] Implement secretless PR checks and protected exact-reviewed-revision evaluation jobs in `.github/workflows/ci.yml`, including content/grounding/eval/dependency change detection, explicit blocked fork status, read-only token, pinned Actions, and no `pull_request_target` execution of proposed code; never treat missing secrets or skipped live checks as a release pass.
 - [ ] T047 [US4] Configure the protected evaluation environment, reviewer approvals, required branch checks, and trusted fork-to-maintainer-branch process for `.github/workflows/ci.yml`; provision only the approved Actions key/model exception through GitHub settings and document the actual configuration or permission blocker in `README.md`.
-- [ ] T048 [US4] Connect Vercel Git integration for main deploys and PR previews, configure fork authorization and separate preview/production settings, and document actual URLs/setup in `README.md`; withhold chat/secrets from untrusted previews and keep initial previews explicitly chat-disabled.
+- [ ] T048 [US4] Prepare Vercel Git integration and actual private-preview access protection early after foundation, with separate preview/production settings and fork authorization; document real URLs/protection readiness in `README.md`, withhold secrets from untrusted code, and keep chat disabled until T060. Missing private access protection is a blocker; an unannounced URL or disabled chat is not privacy. This task does not wait for live evaluations or production acceptance.
 - [ ] T049 [US4] Ask the owner to supply/approve CV-consistent public sections in `content/00-persona.md` through `content/99-boundaries.md` and factual evaluation references in `evals/cases.json`; preserve initial templates until approved edits arrive, never derive answers from questionnaires, and leave this task blocked while required content is missing.
 - [ ] T050 [US4] Run real trusted token/cache/evaluation checks for `evals/cases.json`, have the owner review every factual assertion against approved sources, and exercise approved versus blocked PR/fork workflows in `.github/workflows/ci.yml`; commit stage 6 only after stage 5 is complete and report exact preview/check results.
-- [ ] T051 [US4] Execute the GitHub web-editor edit/PR/merge/redeploy/removal proof using `content/06-faq.md` and `tests/e2e/content-publication.spec.ts`; verify fresh-answer revision within 10 minutes, no stale removed facts, and record observed results in `README.md` without publishing unapproved test biography.
+- [ ] T051 [US4] Execute only the predeployment private-preview publication proof with `content/06-faq.md` and `tests/e2e/content-publication.spec.ts`: browser-edit approved content on a reviewed PR branch, verify new answers within 10 minutes of successful preview publication, then unapprove/remove and verify a fresh preview no longer supplies the fact. Restore approved release content and rerun affected checks; record actual revision/results in `README.md`, requiring no production deployment or production result.
 
-**Checkpoint**: CI configuration alone does not satisfy this story. Actual approved content, trusted checks, a working preview, and a real automatic publication test are required.
+**Checkpoint**: T051 proves private-preview publication before deployment; T069 completes the separate production acceptance after deployment. CI configuration alone does not satisfy either proof.
 
 ## Phase 7: User Story 5 - Handle Limits and Outages Predictably (Priority: P2)
 
@@ -151,11 +153,11 @@
 ### Implementation for User Story 5
 
 - [ ] T055 [US5] Implement one atomic Redis server-time prune/count/add/expiry Lua operation and its typed adapter in `src/lib/rate-limit.ts`, keyed by T024 limit HMAC; enforce exactly 25 claims per rolling day without approximated windows or client-time trust.
-- [ ] T056 [US5] Implement safe environment-scoped Redis client/namespace setup in `src/lib/redis.ts` and `src/lib/env.ts`; require isolated production/preview/test configuration, validate credentials without printing them, and document no-reset HMAC rotation handling in `README.md`.
+- [ ] T056 [US5] Harden and verify the existing T025 shared Redis client/namespace configuration in `src/lib/redis.ts` and `src/lib/env.ts` for limiter integration; assert production/preview/test isolation, no printed credentials, and no-reset HMAC rotation handling in `README.md`. Reuse services provisioned in T008; do not make earlier Redis tests depend on this later hardening.
 - [ ] T057 [US5] Integrate canonical identity, allowance claim, then minimized question write before generation in `src/app/api/chat/route.ts`; claim failures reject closed, log failures produce explicit unavailable errors, and stopped/failed requests keep their consumed allowance.
 - [ ] T058 [US5] Implement the complete localized pre-stream JSON status/code/contact contract and sanitized midstream errors in `src/app/api/chat/route.ts` and `src/lib/chat-stream.ts`; apply 45-second application/60-second route ceilings only after confirming hosting support, and avoid raw payload/provider diagnostics.
 - [ ] T059 [US5] Wire friendly validation/limit/contact/retry/setup/error displays and incomplete partial-answer labels in `src/components/Chat.tsx` and `src/lib/i18n.ts`; preserve Copy/Stop accessibility and ensure every failure ends responding animation without automatic retries.
-- [ ] T060 [US5] Provision real isolated Upstash/Vercel/Codespaces settings for `src/lib/env.ts`, verify trusted header attribution and all T052-T059 integration/privacy checks, then enable `CHAT_ENABLED` only for an owner-approved trusted preview with complete controls; public production stays disabled until final release gates pass.
+- [ ] T060 [US5] Activate only the owner-approved private preview using already provisioned T008/T048 services, T049 content, T037 illustration and T062 public assets/links. Verify actual access protection, isolated preview Redis, trusted header attribution and T052-T059 controls through `src/lib/env.ts`; enable `CHAT_ENABLED` only there, leaving production disabled until T068. Do not provision prerequisites here or require production checks to activate preview.
 - [ ] T061 [US5] Run the boundary/outage matrix for `src/app/api/chat/route.ts`, `src/lib/rate-limit.ts`, and `src/lib/log.ts`; commit stage 5 in English with co-author trailer and report real preview results, outstanding secrets/service blockers, and consumed-quota behavior.
 
 **Checkpoint**: No model call occurs without enforced limits and successful minimized logging. All exact thresholds are tested, not inferred from approximate limiter behavior.
@@ -167,39 +169,41 @@
 - [ ] T062 Obtain the owner's explicitly public/redacted CV and approved photo for `public/cv.pdf` and `public/photo.jpg`, approve hero facts and actual project/social destinations in `src/config/profile.ts` and `src/config/projects.ts`, and keep required asset/claim tasks blocked rather than copying the private source CV or inventing data.
 - [ ] T063 Write recruiter-facing `README.md` in the required six-part order with real live-link status and chat demonstration, owner-approved three-sentence motivation/reflections, Mermaid architecture, small-corpus/caching/guardrail/eval/rate-limit tradeoffs, and voice/video roadmap; obtain missing personal text instead of ghostwriting unverified claims.
 - [ ] T064 Review tracked files and client/server bundles for secrets/private documents, check `.gitignore`, `.env.example`, `src/lib/env.ts`, and `.github/workflows/ci.yml`, and add reproducible secret-leak checks in `scripts/check-secrets.ts` with a `package.json` command and secretless CI wiring; never print any discovered secret.
-- [ ] T065 Run the full cloud validation guide in `specs/001-ask-ana-paula/quickstart.md`, including build/typecheck/lint/unit/contracts/real Redis/live evals/browser checks; update that guide to actual scripts and record any unmet criteria explicitly.
-- [ ] T066 Measure ten real trusted-preview requests with `tests/integration/chat-performance.test.ts` under documented network/model conditions; require at least nine first-text times below five seconds and ordinary answers at most 150 words, separating animation feedback from actual text and correcting measured regressions.
-- [ ] T067 Finish manual owner review of factual responses, illustration, public assets, bilingual copy, mobile/desktop keyboard/contrast, and both themes against `specs/001-ask-ana-paula/spec.md`; record exact release-revision acceptance in `README.md` without claiming automated checks prove universal non-hallucination.
-- [ ] T068 Configure production environment/region/service quotas/privacy disclosures for `src/lib/env.ts` and `src/components/PrivacyFooter.tsx`, verify required checks and actual Vercel plan limits, deploy the approved `main` revision with chat enabled, and record the real live URL in `README.md`.
-- [ ] T069 Verify the actual public release on mobile, live streaming/refusal/contact/limits, avatar state/motion fallback, CV/project links, and Open Graph previews using `tests/e2e/release.spec.ts`; capture an approved chat demonstration at `public/chat-demo.gif` and replace only truthful deployment/demo placeholders in `README.md`.
-- [ ] T070 Commit stage 7 documentation and approved demonstration updates in `README.md` and `public/chat-demo.gif` with the co-author trailer, verify the final automatic redeploy and FAQ update proof, and report each acceptance criterion with observed evidence or remaining blocker.
+- [ ] T065 Run only predeployment cloud checks in `specs/001-ask-ana-paula/quickstart.md`, including build/types/lint/unit/contracts/isolated Redis/live evals/browser checks and the T051 private-preview FAQ proof; update actual script names and record unmet criteria explicitly. Production publication/performance sections remain pending T068-T069, not prerequisites for this task.
+- [ ] T066 Implement reusable real-environment timing checks in `tests/integration/chat-performance.test.ts` and execute ten requests against the access-protected release preview; require at least nine first-visible-model-text times within five seconds under recorded network/model/revision conditions. Include sentence-buffer delay, exclude trusted notices/animation/status, assert complete ordinary answers within 150 words, and save preview acceptance separately from the later production sample.
+- [ ] T067 Obtain owner predeployment sign-off on factual responses, illustration, public assets, bilingual copy, mobile/desktop keyboard/contrast and both themes against `specs/001-ask-ana-paula/spec.md`; record exact preview/release revision in `README.md`, distinguish predeployment approval from final production acceptance, and do not claim universal non-hallucination.
+- [ ] T068 After preview publication/performance acceptance and T067 sign-off, configure production-only environment/region/quotas/privacy settings in `src/lib/env.ts` and `src/components/PrivacyFooter.tsx`, verify required checks/hosting limits, and deploy the reviewed `main` revision with controls and chat enabled. Record deployment status in `README.md` as deployed but not announced; no production test is required to create its own deployment.
+- [ ] T069 After T068, execute the production FAQ browser-edit/PR/merge/redeploy/removal proof in `tests/e2e/content-publication.spec.ts` within the 10-minute publication target, and independently rerun ten production requests through `tests/integration/chat-performance.test.ts` requiring at least nine within five seconds; never pool preview/production results. Run actual mobile/streaming/refusal/contact/limit/avatar/links/OG checks in `tests/e2e/release.spec.ts`, record actual tested revisions/results in `README.md`, and capture an approved `public/chat-demo.gif`. Failures block announcement and trigger correction/disabled chat; rerun affected checks after corrections.
+- [ ] T070 Obtain final owner acceptance after production verification, commit truthful live-link and approved demonstration updates in `README.md` and `public/chat-demo.gif` with the co-author trailer, verify the final automatic redeploy and affected checks, and only then announce completion with observed evidence for every criterion or explicit blockers.
 
 ## Dependencies & Execution Order
 
 ### Phase dependencies
 
 ```text
-Setup T001-T006 -> Foundation T007-T012
-                           |
-            +--------------+---------------+----------------+
-            |              |               |                |
-       US1 core        US2 modules      US3 modules       US4 core
-       T013-T021       T022-T029        T030-T041         T042-T048
-            |              |               |                |
-            +--------------+-------+-------+                |
-                                   |                        |
-                              US5 T052-T061                 |
-                                   |                        |
-                                   +----> US4 T049-T051 <---+
-                                               |
-                                  Release T062-T070
+Setup T001-T006 -> Foundation T007-T012 (T008 provisions test services)
+  |
+  +-> US1 streaming + US2 privacy + US3 illustrated UI
+  +-> T048 private hosting setup
+  +-> T042-T044 -> T049 owner content approval
+  +-> T062 owner public asset approval
+  |
+  +-> US5 controls T052-T059
+         + T048 + T049 + T062 + UI/privacy readiness -> T060-T061
+  |
+  +-> US4 trusted CI/evals T045-T050 (T050 also waits for T061)
+         -> T051 private-preview FAQ proof
+         -> T065 predeployment checks -> T066 preview latency
+         -> T067 predeployment sign-off -> T068 production deployment
+         -> T069 production FAQ + independent latency + smoke checks
+         -> T070 final acceptance, redeploy verification, announcement
 ```
 
 Stories are independently testable through synthetic fixtures, controlled streams, or isolated storage; the fully integrated public release genuinely depends on all five. Owner approval tasks may be requested early but are never marked complete merely because development can proceed with placeholders.
 
 ### Explicit task prerequisites and parallel waves
 
-All tasks depend on their phase entry gate. The following lists actual additional prerequisites; row order alone is not a dependency. Tasks grouped on a row have the same prerequisites and distinct targets unless noted.
+Phase 1 and foundation gates are required as listed below. Story headings establish ownership, not a requirement to finish the preceding story phase; otherwise early cross-story prerequisites would create artificial deadlocks. The following table is authoritative for execution, including early T048/T049/T062 work. Row order alone is not a dependency. Tasks grouped on a row have the same prerequisites and distinct targets unless noted.
 
 | Tasks | Prerequisites |
 |---|---|
@@ -216,13 +220,13 @@ All tasks depend on their phase entry gate. The following lists actual additiona
 | T017 | T014, T016 |
 | T018 | T015, T017 |
 | T019 | T016, T011 |
-| T020 | T018, T019; trusted provider credentials |
+| T020 | T008, T018, T019; provisioned trusted provider credentials |
 | T021 | T013-T020; real smoke results or explicit blocked status |
 | T022, T023 | T012 |
 | T024 | T023 |
 | T025 | T024 |
 | T026 | T016, T022, T021; serialize shared prompt edits after stage 3 |
-| T027 | T025; isolated Redis credentials |
+| T027 | T008, T025; already provisioned isolated Redis credentials |
 | T028 | T025; serialize any `src/lib/i18n.ts` edits with T034 |
 | T029 | T022-T028; owner retention review |
 | T030, T031, T032 | T012 |
@@ -236,23 +240,24 @@ All tasks depend on their phase entry gate. The following lists actual additiona
 | T041 | T030-T040 |
 | T042, T043 | T012 |
 | T044 | T043 |
-| T045 | T016, T019, T044; serialize `package.json` edits after T019 |
+| T045 | T016, T017, T019, T044; reuse the shared output formatter and serialize `package.json` edits after T019 |
 | T046 | T042, T045; implementation may be prepared without live secrets |
 | T047 | T046; GitHub admin/reviewer permissions |
-| T048 | T047; Vercel project/admin access |
+| T048 | T012; early Vercel project/admin access and actual preview protection, independent of T047 |
 | T049 | T044; owner content review; serialize content/fixture edits after T007/T044 |
 | T050 | T042-T049, T061; exact-revision approval and model credentials |
 | T051 | T050, T060; trusted working preview/publication settings |
-| T052, T053, T054 | T012 |
+| T052, T054 | T012 |
+| T053 | T008, T012; write tests now using provisioned isolated services, execute successfully after T055/T056 |
 | T055 | T024, T052, T053 |
 | T056 | T025, T055; serialize environment changes after T008 |
 | T057 | T018, T025, T055, T056 |
 | T058 | T054, T057; serialize stream edits after T017 |
 | T059 | T035, T038, T058; serialize Chat/i18n edits after US3 implementation |
-| T060 | T027, T029, T041, T049, T053, T056-T059; owner-approved preview services/content |
+| T060 | T027, T029, T041, T048, T049, T053, T056-T059, T062; protected hosting, approved content/assets and complete controls |
 | T061 | T052-T060 |
 | T062 | T012; owner public asset/link approval; finish before T065 |
-| T063 | T029, T048; owner motivation/reflections; finalize after T062 |
+| T063 | T029, T048, T062; owner motivation/reflections |
 | T064 | T046, T056; serialize CI/package changes after T046/T045 |
 | T065 | T050, T051, T061, T062, T064 |
 | T066 | T060, T065; provider quota for ten measured requests |
@@ -270,10 +275,10 @@ Story grouping is the source of ownership and acceptance; it does not override t
 1. Stage 1: T001-T006.
 2. Stage 2: T007-T012.
 3. Stage 3: T013-T021, with mandatory baseline refusal instructions already in T016.
-4. Stage 4: T030-T041; privacy components T028 may be staged here, while storage modules remain on the working branch until stage 5.
+4. Stage 4: T030-T041; build T025/T028 early enough for UI integration and commit any directly imported shared modules needed for a buildable stage. Do not commit components importing missing stage-5 modules; keep chat disabled.
 5. Stage 5: T022-T029 plus T052-T061 integration/verification. T026 augments tested baseline refusals; public chat was never enabled beforehand.
-6. Stage 6: T042-T050; perform T051 once the trusted deployment is available.
-7. Stage 7: T062-T070; T062 owner assets may be obtained earlier. Final live-link/GIF updates may need a small follow-up documentation commit after publication.
+6. Stage 6: T042-T050; perform T048 hosting and T049 content approval before T060 regardless of milestone number. T051 is a private-preview proof after trusted preview activation, not a production prerequisite.
+7. Stage 7: T062-T070; obtain T062 assets before T060. T065/T066 are predeployment checks, T068 creates production, T069 verifies production, and T070 announces only after final acceptance. Final live-link/GIF updates may need a small follow-up documentation commit after publication.
 
 Use descriptive English messages and the required co-author trailer. Do not create empty milestone commits or falsely report success when blocked. Each stage report gives the actual preview URL/status and checks from [quickstart.md](quickstart.md). Missing hosting configuration is a blocker, not a made-up preview.
 
@@ -283,7 +288,7 @@ Run only the following bounded waves after the listed prerequisites, using separ
 
 ### User Story 1
 
-After foundation, T013 prompt tests, T014 stream tests, and T015 route tests can be written concurrently. After T016, token-count tooling T019 can proceed alongside stream adapter T017; both finish before the real integration smoke test.
+After foundation, T013 prompt tests, T014 stream tests, and T015 route tests can be written concurrently. After T016, token-count tooling T019 can proceed alongside stream adapter T017; both finish before the real integration smoke test, whose credentials already exist from T008.
 
 ### User Story 2
 
@@ -295,11 +300,11 @@ T030 reducer tests, T031 chat browser tests, and T032 avatar/accessibility tests
 
 ### User Story 4
 
-T042 knowledge-publication tests and T043 evaluation-runner tests can run together. Owner review T049 may proceed while T046-T048 establish trusted CI/hosting, provided fixture edits are serialized after T044. Do not run live evaluations before exact-revision trust.
+T042 knowledge-publication tests and T043 evaluation-runner tests can run together. T048 protected hosting can start immediately after foundation independently of CI; owner content review T049 follows T044 while T045-T047 establish trusted evaluations. Serialize shared README edits. T051 private-preview proof waits for T050/T060, whereas production verification belongs only to T069.
 
 ### User Story 5
 
-T052 limiter unit tests, T053 real-Redis test definitions, and T054 route/UI error tests can be written together. Live T053 execution waits for isolated Redis; T055 implementation follows the expected failing tests. Shared route/stream/chat changes T057-T059 are sequential.
+T052 limiter unit tests, T053 real-Redis test definitions, and T054 route/UI error tests can be written together. T008 supplies isolated services before these tests; T055 implementation follows the expected failing tests, and successful live execution follows T055/T056. Shared route/stream/chat changes T057-T059 are sequential. Preview activation T060 waits for hosting/content/assets as well as controls, never for a production deployment.
 
 ## Implementation Strategy
 
@@ -315,8 +320,9 @@ The public MVP includes US1-US5 and the release gates. Voice, video, vector sear
 2. Prove trusted streaming behavior without exposing incomplete public chat.
 3. Build the bilingual illustrated experience and privacy modules with independent tests.
 4. Integrate exact usage/log/error controls and verify a trusted preview.
-5. Establish safe PR checks/live evaluations, complete owner inputs, and prove browser content publishing.
-6. Run measured acceptance, publish truthful recruiter documentation, and enable the approved public release.
+5. Establish safe PR checks/live evaluations and prove browser content update/removal in the private preview; content/assets were approved before preview activation.
+6. Pass the private-preview latency sample and owner predeployment sign-off, then deploy production without announcing it.
+7. Repeat FAQ publication/removal and the independent latency sample in production, run smoke checks, obtain final approval, and announce only the verified release.
 
 ### Requirement coverage
 
@@ -329,7 +335,7 @@ The public MVP includes US1-US5 and the release gates. Voice, video, vector sear
 | FR-018-020; SC-002/010 | T042-T051, T065, T068-T070 |
 | FR-022-023 | T001-T006, T029, T063, T065-T070 |
 | FR-025-028; SC-011/012 | T030, T032, T036-T039, T041, T059, T067, T069 |
-| SC-009 actual latency/length | T014, T017, T020, T066 |
+| SC-009 actual latency/length | T014, T017, T020, T066 (preview), T069 (production) |
 
 ## Completion Rules
 

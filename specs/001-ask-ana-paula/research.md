@@ -104,4 +104,4 @@ Protect `main`, edit content through browser-created branches/PRs, and merge onl
 
 No unresolved design questions. The operator must still choose `ANTHROPIC_MODEL`, configure service accounts and any required paid features, approve text/photo/CV/illustration, review provider retention, and supply actual deployment URLs. Those are explicit release dependencies. The planning documents make no claim that factual correctness, caching, latency, or live deployment has already been verified.
 
-The existing task list predates these decisions and must be reconciled in `/speckit-tasks` before implementation. This is a known scheduling follow-up, not an unresolved product question.
+The task list has been reconciled with these decisions while preserving T001-T070: early provisioning and approvals, private-preview acceptance, deployment, independent production verification, and announcement now have separate prerequisites. Cross-artifact analysis should confirm consistency before implementation.
