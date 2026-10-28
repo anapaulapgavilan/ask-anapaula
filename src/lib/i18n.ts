@@ -20,3 +20,13 @@ export const messages = {
     setup: "El chat todav\u00eda no est\u00e1 disponible.",
   },
 } satisfies Record<Language, Record<string, string>>;
+
+export function replyLanguage(text: string, fallback: Language): Language {
+  const normalized = text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  const spanish = /\b(?:hola|quien|que|como|por que|cuentame|hablame|dime|cual|cuales|espanol|experiencia|trayectoria|detalles)\b/g;
+  const english = /\b(?:hello|hi|who|what|how|why|tell|explain|english|experience|career|details)\b/g;
+  const es = [...normalized.matchAll(spanish)].length;
+  const en = [...normalized.matchAll(english)].length;
+  if (es === en) return fallback;
+  return es > en ? "es" : "en";
+}

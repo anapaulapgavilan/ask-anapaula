@@ -1,6 +1,6 @@
 # Quickstart and Validation Guide: Ask Ana Paula
 
-Implementation is partial: the setup-only Next.js page, cloud devcontainer, unit/browser tooling, eight content templates, approved-Markdown compiler, runtime configuration and request validation exist. `dev`, `build`, `lint`, `typecheck`, `test`, `test:e2e`, `content:build`, `content:check` and `content:ready` are implemented; readiness correctly fails until public content/assets are approved. Live chat, token/evaluation commands, full service integrations and actual deployment acceptance remain pending. Commands below describing those pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
+Implementation is partial: setup-only UI, cloud tooling, approved-Markdown compilation, configuration, strict request validation and the disabled streaming backend exist. Content build/check/readiness/token commands are implemented; readiness correctly fails until public content/assets are approved. The direct real-provider smoke test runs through `npm run test:integration -- tests/integration/anthropic.test.ts`. Public chat, full Redis integrations, illustrated UI, the evaluation runner and deployment acceptance remain pending. Commands describing pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
 
 ## 1. Prerequisites
 

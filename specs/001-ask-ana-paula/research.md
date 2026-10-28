@@ -22,6 +22,8 @@
 
 Use the SDK's cancellation signal and a bounded request timeout; ensure word-limiting the text delta stream preserves SDK framing and does not leave a responding avatar active after Stop. Do not stream hidden reasoning or raw provider errors.
 
+**Live compatibility evidence**: The configured model accepted real bilingual streaming and cancellation/deadline tests. It does not support fully disabled thinking; the provider-supported `between_tools` option removes up-front thinking without adding tools. The adapter suppresses reasoning in all visible output. The scaffold's optional Cache Components/partial-prefetch settings were removed because Next.js rejects explicit route runtime configuration with Cache Components; the chat endpoint remains explicitly Node and `no-store`.
+
 **Alternatives considered**: Raw hand-built SSE without SDK framing; deprecated `maxTokens`; copying older SDK examples untested; using an arbitrary client system message.
 
 **Sources**: [Chatbot guide](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot), [streamText reference](https://ai-sdk.dev/docs/reference/ai-sdk-core/stream-text), [Anthropic provider](https://ai-sdk.dev/providers/ai-sdk-providers/anthropic), [published ai 7.0.156 declarations](https://unpkg.com/ai@7.0.156/dist/index.d.ts).

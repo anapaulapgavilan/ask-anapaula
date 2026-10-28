@@ -10,7 +10,7 @@ TODO: Ana Paula will supply and approve three sentences about her motivation.
 
 ## How it works
 
-The setup page and the approved-Markdown compiler exist. The chat API, service integrations, and illustrated avatar in this architecture are still planned, not active:
+The setup page, approved-Markdown compiler and disabled chat endpoint exist. The streaming backend is tested directly; public chat, Redis enforcement/logging integration and the illustrated UI are not yet active:
 
 ```mermaid
 flowchart LR
@@ -51,7 +51,7 @@ npm run test:e2e
 
 The browser command selects only the `mocked` project. Real acceptance must explicitly select `--project=live-preview` or `--project=live-production` in a trusted Codespace with HTTPS `E2E_TARGET_URL` and matching `E2E_TARGET_ENV` (`preview` or `production`). Live suites do not exist yet; a missing suite/configuration is not acceptance.
 
-Integration tests will use `npm run test:integration`; no real-service test exists yet, so this command must not be reported as a live pass.
+`npm run test:integration -- tests/integration/anthropic.test.ts` runs the trusted real-provider smoke matrix, not Redis or release acceptance. It consumes API quota and must never receive secrets from untrusted changes.
 
 Set secrets through Codespaces/Vercel settings, never committed files or command history. The ten blank names are in [.env.example](.env.example). `CHAT_ENABLED` will default to disabled when environment validation is implemented.
 
@@ -63,6 +63,16 @@ Set secrets through Codespaces/Vercel settings, never committed files or command
 - The devcontainer was rebuilt; SSH was absent from the base image and was restored. The explicit `sshd` feature now makes that requirement reproducible.
 - Vercel preview: no deployment is recorded or verified. Once hosting is connected, verify the honest setup message, disabled chat, mobile layout, and absence of unapproved personal assets. A disabled page does not establish private access protection.
 - T008 services are now available in Codespaces: Anthropic authentication/configured-model lookup and isolated Redis read/write/TTL succeeded, with synthetic-key cleanup. These checks do not prove paid generation or release acceptance. SSH automation must use a login shell (`bash -l`) to load Codespaces secrets; do not print their values.
+
+### Stage 3 verification
+
+- Trusted rules, stable cached evidence and dynamic language/first-turn guidance are separate. No TODO premise supplies facts.
+- The shared formatter reserves identity/contact inside the ordinary 150-word ceiling, buffers whole sentences and intact links, discards unfinished tails and keeps SDK framing valid on Stop/errors.
+- `/api/chat` validates origins, media, bounded bytes and strict messages but always returns `CHAT_NOT_READY` after validation until US2/US5 are integrated, even if an operator prematurely enables the environment flag.
+- Verified: 60 unit/contract checks, two setup browser/axe checks, lint/types/build, and a real-provider matrix covering EN/ES with opposite UI-language fallbacks, missing information, a test-only synthetic fact, repeated-prefix cache usage, cancellation and deadline cleanup.
+- The current trusted token check passed at 578 tokens including its synthetic envelope. Repeated real calls reported 561 cache-read tokens. This does not predict cache behavior for future approved content or models.
+- The selected model rejects completely disabled thinking. Use the supported `between_tools` mode (no up-front thinking), no tools, and suppress all reasoning from visible streams. Model changes require a fresh compatibility/evaluation run.
+- Vercel preview is still not verified. Once connected, confirm setup-only UI and a contact-bearing 503 from the disabled endpoint, with no public model generation. Hosting-duration support, rate limiting, privacy policy approval, content/assets, illustrated UI and full release evaluations remain pending.
 
 ### Independent knowledge foundation
 
