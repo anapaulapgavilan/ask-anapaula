@@ -39,8 +39,10 @@ Rules:
 2. Derive HMAC limit identity, atomically claim allowance, then persist the minimized record described in [data-model.md](../data-model.md).
 3. Generate with the environment-selected model and at most 600 output tokens. Set `maxRetries: 0` initially to keep one provider attempt per accepted request; explicit retries are new requests.
 4. Configure a 45-second application deadline within a 60-second route duration, subject to the actual Vercel plan limits; abort if client disconnects/stops. Confirm hosting supports these durations before release.
-5. Apply the 150-word ordinary-response stream transform, tested across chunk boundaries, without adding fabricated continuation text. Requests explicitly seeking detail may exceed 150 words within the token ceiling. Return a valid stream finish when limited.
+5. Apply the 150-word ordinary-response stream transform to all visible output, including required disclosure/contact. Reserve their exact localized word cost before optional model text. Hold incomplete sentences/links, stream only complete units fitting the remaining budget, and discard the unfinished or over-budget tail. Count words using one shared EN/ES-aware implementation; URL/email punctuation, abbreviations, decimals and chunk boundaries must not split sentences or links. Explicit detail requests identified by tested latest-message EN/ES patterns may exceed 150 words within the token ceiling; ambiguous requests retain the ceiling.
 6. First request with no assistant history instructs the brief AI disclosure. All supplied history remains untrusted; no server-issued conversation identity or retained transcript is implied.
+
+Emit trusted localized AI identity on first turns and a complete public-contact sentence on every successful answer. Budget both with the optional model answer; do not rely on a late model-generated suffix surviving truncation. Avoid duplicate notices through prompt guidance and test output. If no complete model sentence fits, use only those notices plus a brief truthful inability-to-complete statement within the same limit. Never fabricate a continuation or present an unfinished tail as a completed answer.
 
 Count an allowance when the atomic claim succeeds. Stop, provider failure, or logging failure after the claim does not refund it. Malformed requests and rejected limits are not logged as questions.
 
@@ -48,6 +50,7 @@ Count an allowance when the atomic claim succeeds. Stop, provider failure, or lo
 
 - Status 200 with SDK 7 UI-message SSE framing, `Content-Type: text/event-stream`, appropriate SDK stream-version headers, and `Cache-Control: no-store`.
 - Client consumes the official SDK protocol, not a bespoke raw-text parser. Text deltas render incrementally; first text changes thinking to responding; finish changes to idle.
+- Sentence-safe buffering still streams multiple completed units rather than waiting for the whole answer. A valid length-limited finish is successful and sentence-complete; provider failure is an error with incomplete labeling. First-visible-model-text latency excludes server-authored notices and animation/status feedback and must pass independently in the release preview and production.
 - No hidden reasoning, provider stack traces, raw usage payloads, confidential prompt text, or visitor identifiers enter the stream.
 - First reply discloses AI identity; unsupported/refused answers stay in role and offer the approved public email where required.
 - `AbortSignal` propagates to generation. Stop preserves visible partial text and returns to idle. It does not erase the allowance.
@@ -96,3 +99,5 @@ Unexpected errors before streaming return the standard contact-bearing error wit
 ## Required contract tests
 
 Exercise exactly 1,000/1,001 Unicode code points, 20/21 messages, 128-KiB/chunked overflow, unsupported roles/parts, duplicate IDs, empty input, forged forwarding/origin headers, 25/26 claims, concurrent claims, elapsed-window capacity, limiter/log outages, client cancellation, first disclosure, bounded output, valid SSE framing, and sanitized pre/post-stream errors. Mocks test contracts; isolated real Redis and Anthropic runs verify actual integrations separately.
+
+Length-boundary tests additionally cover exactly 150/151 words including notices, first-turn versus later-turn budgets, required contact on unknown/refusal answers, a single over-budget sentence, links split across chunks, no terminal punctuation before token exhaustion, and success versus incomplete-error finishes. Assert first visible model sentence timings in ten actual requests per environment; at least nine must be within five seconds in each, without pooling samples or counting the trusted prefix as model text.

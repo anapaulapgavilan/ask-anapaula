@@ -56,6 +56,7 @@ The trusted prompt includes the configured public email and approved project URL
 - Test repeated identical-prefix requests and inspect actual cache write/read usage. A small corpus below the configured model's cache minimum is explicitly reported as uncached, not padded or falsely labeled a cache hit.
 - Template-only protected previews are allowed with chat disabled; public launch requires enough approved profile/experience/project/FAQ content to pass fact-grounded evaluations and owner approval of the remaining intentional gaps.
 - Editing an approved FAQ answer in the browser, passing checks, and merging triggers automatic Vercel redeployment. A new conversation then reflects the new revision. Cache-prefix content changes invalidate the old prefix naturally.
+- Before production deployment, prove the approved-answer update/removal behavior in an access-protected trusted PR preview, within 10 minutes of successful preview publication. After preview acceptance and production deployment, repeat the browser edit/PR/merge/redeploy proof on production within 10 minutes of successful publication, before announcement. Production verification is not a prerequisite for creating that production deployment.
 - Deleting or unapproving a fact removes it from the next release; no stale generated artifact or persistent transcript may restore it.
 
 ## Required checks

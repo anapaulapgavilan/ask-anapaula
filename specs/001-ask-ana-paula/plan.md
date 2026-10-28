@@ -12,6 +12,8 @@ The avatar is part of the initial release, not a future enhancement: a local SVG
 
 This is a design deliverable, not an implemented app or live deployment. No application dependencies were installed and no credentials were created in this phase.
 
+**Revision after clarification**: Incorporates the three owner decisions recorded on 2026-10-28: private-preview then production publication proof, independent latency acceptance in both environments, and sentence-safe 150-word answers preserving mandatory disclosures/contact. Existing SDK research is reused; package compatibility must still be verified during scaffolding.
+
 ## Technical Context
 
 **Language/Version**: Strict TypeScript; Node 24 LTS in Codespaces, CI, and Vercel. Planning-time npm registry resolution in Codespaces: Next.js 16.4.3, TypeScript 7.0.2. Reconfirm stable versions and compatibility during scaffolding; pin exact tested versions and commit the lockfile.
@@ -26,7 +28,7 @@ This is a design deliverable, not an implemented app or live deployment. No appl
 
 **Project Type**: Single full-stack web application with one public streaming endpoint.
 
-**Performance Goals**: First answer text within 5 seconds for at least 9 of 10 documented normal-network requests; ordinary answers at most 150 words; animation causes no layout shifts or obstruction. Production smoke tests measure the real model and region; mocks do not satisfy latency acceptance.
+**Performance Goals**: Independently in the private release preview and production, first visible answer text within 5 seconds for at least 9 of 10 documented normal-network requests before announcement. Ordinary answers contain at most 150 words including required disclosure/contact and end in complete sentences with intact links. Measure actual model text after sentence buffering, not a local status/disclosure; animation causes no layout shifts or obstruction. Mocks do not satisfy latency acceptance.
 
 **Constraints**: Fewer than 30,000 cached knowledge tokens; at most 600 output tokens; 20 submitted messages, 1,000 Unicode code points per message, 25 accepted requests per canonical IP in each rolling 24-hour interval. No real `.env` files committed. No confidential facts or private source documents published.
 
@@ -48,6 +50,7 @@ Binding gates derive from the approved specification:
 | Exact rolling limit and privacy minimization | PASS | Atomic Redis contract; safe catalog text or omitted text, never arbitrary free-text retention |
 | Animated illustrated avatar in v1, accessible without movement | PASS | [UI contract](contracts/ui.md) and browser validation matrix |
 | No fabricated readiness or public assets | PASS | Explicit owner/service prerequisites and launch gate |
+| Clarified publication and output acceptance | PASS | Private and production validation are separate forward-only gates; sentence/link-safe word budgeting and independent real latency samples |
 
 No unresolved design clarification or unjustified gate violation remains. External accounts, assets, model choice, and approvals are deployment prerequisites, not fabricated completed work.
 
@@ -70,7 +73,7 @@ specs/001-ask-ana-paula/
   checklists/requirements.md
 ```
 
-`tasks.md` is intentionally not created here; `/speckit-tasks` generates the implementation task graph next.
+`tasks.md` already exists from the previous planning revision. This command updates design only; `/speckit-tasks` must reconcile its dependency graph and acceptance checks before implementation.
 
 ### Source Code (repository root)
 
@@ -122,8 +125,10 @@ Trusted instructions enforce boundaries even when `99-boundaries.md` is still a 
 3. Use a domain-separated HMAC identifier in one atomic Redis sorted-set script to claim one allowance. Once claimed, it is consumed even if the visitor stops or the provider fails.
 4. Persist the minimized question record before generation. If storage fails, return a friendly unavailable error; emit only an allowlisted operational code. Do not silently drop records or expose visitor input.
 5. Convert validated UI messages with `await convertToModelMessages`. Prepend trusted system messages and the stable cached evidence block; use `maxOutputTokens: 600`, a server deadline, no tools, and abort propagation.
-6. Map `result.stream` through the standalone `toUIMessageStream` and `createUIMessageStreamResponse` helpers. Suppress reasoning/provider metadata. Transform ordinary answer text to enforce 150 words, preserving stream validity; more-detail requests retain the 600-token ceiling. Unit tests cover word boundaries split across chunks.
-7. First-turn disclosure and contact-bearing refusals/unknown answers are evaluated against the real assembled prompt. Stream errors expose only the localized standard error. Already-sent partial text is labeled incomplete on failure.
+6. Map `result.stream` through the standalone `toUIMessageStream` and `createUIMessageStreamResponse` helpers. Suppress reasoning/provider metadata. For ordinary answers reserve the localized first-turn disclosure and contact sentence before budgeting optional model text; count all visible text toward 150 words. Buffer each model sentence until its end and link syntax are complete, then stream it only if it fits. Stop before a sentence that would exceed the remaining budget and discard any unfinished tail. More-detail requests retain the 600-token ceiling.
+7. Emit the short trusted AI disclosure on first turns and a complete approved contact sentence on every successful answer, so mandatory unknown/refusal contact cannot be lost through truncation or a missed model classification. These static sentences are transparent identity/contact guidance, not invented biography. The model is instructed not to duplicate them; reserve their exact word cost. If no complete model sentence fits, finish with the trusted guidance and an honest localized inability-to-complete notice within the budget, not fabricated answer content. Stream failures instead emit the standard error and label any partial answer incomplete.
+
+Use one tested EN/ES word counter and sentence/link-aware parser across stream transforms and evaluations. An explicit request for more detail is determined from the latest user text with documented EN/ES request patterns and tests; ambiguous requests keep the ordinary ceiling. Do not treat punctuation in URLs, email addresses, decimals, abbreviations, or split chunks as an automatic sentence end. Bound the held tail by the provider output ceiling, propagate cancellation, and complete SDK framing when output is limited. First-provider-text latency is measured only when a buffered model sentence becomes visible; local disclosure/contact/status must not mask a slow answer. Test both successful truncation and provider token exhaustion without a terminal sentence.
 
 `chat-stream.ts` isolates SDK-specific framing and output limiting from the route. No transparent regeneration/retry from the browser; it could consume additional quota and duplicate requests. Abort, completion, and error drive the avatar state machine in [UI contract](contracts/ui.md).
 
@@ -149,6 +154,17 @@ Vercel Git integration supplies PR previews and automatic `main` deploys. Protec
 
 Production launch requires approved content/assets, live checks against the exact release revision and configured model, Redis boundary tests, secret checks, and mobile/a11y verification. A plain keyword pass is not proof of no hallucination; the owner reviews factual claims against the approved corpus. No release is labeled complete while those approvals are missing.
 
+### Forward-only provisioning and release gates
+
+1. **Cloud test services ready**: Before any real Redis or provider test, provision the isolated integration Redis database/namespace and Codespaces credentials. Prepare a Vercel project/Git integration and private-preview access protection early, with preview chat disabled and no production credentials supplied to untrusted code. This provisioning does not depend on tests that require those services.
+2. **Approved inputs and controls ready**: Owner-approved content and illustration, public assets/links, working limit/log/error modules, and isolated integration results must exist before enabling model-backed preview chat. Request content approval as soon as templates/evaluation source references exist, not after the stage that needs approved preview content.
+3. **Private release preview accepted**: Enable chat only for a trusted, access-protected preview with its own Redis data. A non-announced URL or `CHAT_ENABLED=false` alone is not private access protection. If appropriate Vercel protection is unavailable, keep this gate blocked rather than expose the preview. Prove the FAQ update/removal workflow and independently meet the 9-of-10 latency target here. No production success is required to complete this predeployment gate.
+4. **Production deployed, not yet announced**: After preview acceptance, approved checks, content/assets and owner predeployment sign-off, deploy the reviewed revision with production-only secrets and working controls. This transition requires no production test that cannot run until deployment exists.
+5. **Production verified**: Repeat the real browser FAQ edit/PR/merge/redeploy/removal proof and the independent ten-request latency test on production. Verify mobile/avatar/privacy/limit smoke behavior; failure blocks announcement and triggers correction or disabled chat, never a fictional pass. If a corrective revision changes relevant behavior, rerun affected preview/live checks and record the actual production revision.
+6. **Announced release**: Only after production checks and final owner sign-off, publish the real live-link/demo and announce completion. Automatic `main` deploys remain active; subsequent content edits follow the same reviewed publication path.
+
+Record deployment, preview acceptance, production verification, and announcement as distinct states, as defined in [data-model.md](data-model.md). Integration provisioning, content approval, and private preview testing must not be hidden behind later stage numbers.
+
 ### Required environment configuration
 
 The example contains blank values only; actual credentials are set in cloud dashboards.
@@ -171,6 +187,8 @@ Changing the HMAC key resets network identity; rotate with overlapping old/new l
 ### Delivery sequence and verification
 
 Follow the seven owner-defined implementation commits in [delivery constraints](delivery-constraints.md), with avatar and motion controls in stage 4. For stages 1-4 keep model-backed preview chat disabled until stage 5 protections are verified. Add unit tests along with each feature; stage 6 completes automated evaluations/CI rather than postponing all validation until the end. After each stage report the actual preview URL/status and exact checks in [quickstart](quickstart.md); do not invent URLs.
+
+Before `/speckit-implement`, regenerate/reconcile [tasks.md](tasks.md) without losing its existing task IDs: separate early service provisioning from preview activation; move owner content approval ahead of activation in both table and diagram; split predeployment FAQ/latency checks from postdeployment production verification; and test sentence-safe word budgets plus required contact/disclosure. The previous T027/T053 tests need early service setup; T049 must precede T060; T051/T065 must not require production success before T068; T066/T069 must cover independent preview and production latency samples. Only an explicit dependency graph, not phase numbering or milestone prose, controls cross-story scheduling. Design gates pass; the older task schedule is not yet implementation-ready.
 
 ### Requirements traceability
 

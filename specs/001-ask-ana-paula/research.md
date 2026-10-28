@@ -80,6 +80,28 @@ Protect `main`, edit content through browser-created branches/PRs, and merge onl
 
 **Sources**: [GitHub secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions), [secure workflow use](https://docs.github.com/en/actions/reference/security/secure-use), [environments](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments), [Vercel GitHub integration](https://vercel.com/docs/git/vercel-for-github), [Vercel environment variables](https://vercel.com/docs/environment-variables).
 
+## 8. Clarified output finalization
+
+**Decision**: For ordinary answers, reserve exact localized identity/contact word costs, hold incomplete model sentences/links, emit only complete units that fit, and discard an unfinished or over-budget tail. Include a short contact sentence on all successful replies, with AI identity on first replies, so unknown/refusal contact is never lost. Keep the 600-provider-token ceiling and SDK stream framing; explicit detail requests may exceed 150 words.
+
+**Rationale**: The owner explicitly chose complete sentences and mandatory notices within 150 words, not a flexible target. Once arbitrary deltas have been sent they cannot be retracted, so buffering is necessary. A trusted short guidance-only outcome with an honest completion notice handles a model that supplies no complete fitting sentence without inventing facts. Measure first visible model sentence separately from local disclosure/status to preserve the latency requirement.
+
+**Alternatives considered**: Cutting at the 150th word breaks sentences/links; adding notices after budgeting can exceed the ceiling; buffering the entire answer needlessly sacrifices incremental delivery; dropping required contact to fit optional prose violates the clarification.
+
+**Evidence**: Owner decisions in [spec.md, Clarifications](spec.md#clarifications). This is an application design decision, not a provider guarantee. Implementation must test EN/ES segmentation, URL/email punctuation, split chunks, output-token exhaustion, aborts, and valid stream finish behavior.
+
+## 9. Separate provisioning, deployment, verification, and announcement
+
+**Decision**: Provision isolated cloud services before real integration tests. Approve content before model-backed private preview activation. Validate FAQ publication and ten-request latency in an access-protected release preview, then deploy production without announcing it, repeat publication/latency checks in production, and announce only after final acceptance.
+
+**Rationale**: Tests cannot depend on credentials that are only provisioned after those tests pass. Production checks cannot be prerequisites for creating their own production deployment. The owner selected private-preview-first testing and independent performance acceptance in both environments. An unlisted public URL is not a private preview.
+
+**Alternatives considered**: Run all checks only in preview (fails production acceptance); enable production before any preview proof (rejects the chosen sequence); place provisioning in the last activation task (blocks earlier real tests); treat disabled chat as access protection (does not make the site private).
+
+**Evidence**: [Owner clarifications](spec.md#clarifications), [Vercel deployment protection](https://vercel.com/docs/deployment-protection), and the earlier cross-artifact analysis. Existing SDK/runtime research remains applicable; no new model, dependency, or account-level service capability was assumed or provisioned in this revision.
+
 ## Resolution status
 
 No unresolved design questions. The operator must still choose `ANTHROPIC_MODEL`, configure service accounts and any required paid features, approve text/photo/CV/illustration, review provider retention, and supply actual deployment URLs. Those are explicit release dependencies. The planning documents make no claim that factual correctness, caching, latency, or live deployment has already been verified.
+
+The existing task list predates these decisions and must be reconciled in `/speckit-tasks` before implementation. This is a known scheduling follow-up, not an unresolved product question.

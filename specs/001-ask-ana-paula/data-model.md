@@ -45,6 +45,8 @@ Do not require alternating roles: 20 submitted messages remain a testable valid 
 
 An assistant output can exceed 1,000 characters within the output cap; before resubmitting history, if any message exceeds the input cap or a next request would exceed 20 messages, the client explicitly offers a fresh conversation rather than silently truncating facts or violating the contract.
 
+Ordinary output accounting includes visible trusted disclosure/contact plus model text within 150 words. Transient stream state holds the remaining word budget, an uncommitted sentence/link tail, and whether the answer was length-limited. Only complete fitting sentences/links are committed. A length-limited successful finish differs from a provider error; the latter is visibly incomplete. Explicit detail requests remain capped at 600 provider output tokens.
+
 ## 4. Avatar state (client only)
 
 | Trigger | Visual state | Text status |
@@ -98,8 +100,10 @@ The analytics and limiter hashes are domain-separated but remain pseudonymous. T
 
 ## 8. Publication revision
 
-Fields: Git commit, content revision, dependency-lock revision, configured model, check statuses, owner approval, preview URL if real, production readiness.
+Fields: Git commit, content revision, dependency-lock revision, configured model, check statuses, owner approval, real preview/production URLs, preview access-protection status, and release state. Record separate private-preview and production publication proofs, each ten-request latency sample (network conditions, visible model-text timings, pass count), timestamps, and tested revision; never visitor transcripts or secrets.
 
-Transitions: proposed -> secretless checks -> trusted evaluation approval -> live evaluations and preview review -> approved merge -> automatic production deployment -> smoke-tested release.
+Transitions: proposed -> secretless checks -> trusted evaluation approval -> private-preview controls/content ready -> private-preview publication/performance accepted -> owner predeployment approval -> approved merge/production deployment (not announced) -> production publication/performance verified -> final owner approval -> announced release.
+
+Isolated integration-service provisioning precedes real integration tests and is independent of release approval. A preview acceptance does not require production results; production verification requires an existing deployment. Failed checks block the next transition and lead to correction/disabled chat as appropriate; missing private-preview protection is a blocker, not implicit acceptance.
 
 New commits invalidate previous exact-revision trust. A model change requires fresh evaluations and token/cache checks even if Git content did not change.

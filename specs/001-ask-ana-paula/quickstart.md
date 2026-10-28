@@ -12,6 +12,8 @@ This is a future implementation runbook, not proof the commands or app already e
 - Codespaces and Vercel secrets from the [plan environment table](plan.md#required-environment-configuration). GitHub Actions uses only the approved trusted-evaluation key/model exception; actual secrets are never written into commands, docs, or committed env files.
 - Confirm actual provider retention, Vercel plan limits/protection, spending alerts, and infrastructure log settings before public launch.
 
+Provision isolated Redis and Codespaces provider credentials before attempting real integration tests; do not defer that setup to the task that enables preview chat. Request content/illustration approvals early. Verify actual access protection before calling a Vercel preview private; an unannounced URL or disabled chat is not access protection. If protection is unavailable, the private-preview gate remains blocked.
+
 ## 2. Cloud setup
 
 In the Codespaces terminal, once implementation exists:
@@ -92,7 +94,8 @@ Use [UI contract](contracts/ui.md) and [API contract](contracts/chat-api.md) for
 5. Enable reduced motion before page load. Confirm no blink/continuous motion, with static illustration and localized state text. Test pause/resume and system preference changes.
 6. Simulate a missing SVG: explicit localized notice and fallback, with full written conversation still usable.
 7. Test Copy, clipboard failure, keyboard focus/order, labels, live-region behavior, contrast, overflow, and 20/21-message plus 1,000/1,001-code-point input boundaries.
-8. Run ten real requests under recorded normal-network conditions; at least nine show first text within five seconds. Do not confuse animated thinking feedback with first model text.
+8. Run ten real requests in the private release preview under recorded normal-network/model/revision conditions; at least nine show first model answer text within five seconds. Repeat with ten independent requests in production after deployment and before announcement; do not pool results or count animated feedback/server-authored notices as model text. Sentence buffering is part of the measured delay.
+9. Exercise ordinary answers at the 150-word boundary including disclosure/contact: finish at complete sentences with intact links, no dropped mandatory guidance, and no unfinished token-exhausted tail labeled complete. Test explicit detail requests separately within the provider-token ceiling.
 
 ## 6. PR and deployment checks
 
@@ -100,17 +103,29 @@ Use [UI contract](contracts/ui.md) and [API contract](contracts/chat-api.md) for
 - Confirm a fork PR cannot access model/Redis secrets or run privileged code and has a clearly blocked live-evaluation status until reviewed. Do not mark missing-key cases green.
 - Verify Vercel fork deployment authorization and review secret exposure before allowing a preview. Early previews are chat-disabled until controls exist.
 - For a trusted PR, review its real preview URL, mobile behavior, content revision, and live evaluation report; protect `main` against merging failed/blocked required checks.
-- Set production secrets through Vercel, not CI logs. Enable chat only after all safety/privacy/runtime checks pass. Production deploys automatically after approved merges.
+- Set production secrets through Vercel, not CI logs. After private-preview acceptance and owner predeployment sign-off, deploy with production chat enabled and all controls verified. Production deploys automatically after approved merges. Only then run production-specific publication/performance checks; keep announcement blocked until they pass and the owner signs off. Disable chat or correct the deployment if those checks fail.
 
-## 7. Browser content-edit proof
+## 7. Two-stage browser content-edit proof
 
-1. In GitHub's web editor, create a branch, update one owner-approved answer in `content/06-faq.md`, and open a PR.
-2. Verify grammar, grounding, secretless checks, approved live evals, and the actual preview.
-3. Merge to `main`; confirm automatic Vercel publication.
-4. Start a fresh conversation and ask that question. Within 10 minutes of successful publication, the answer reflects the new approved content.
-5. Unapprove/remove the test answer in a reviewed follow-up and verify it no longer supplies facts; no stale cached prefix or generated artifact restores it.
+**A. Before production deployment: private preview**
+
+1. In GitHub's web editor, create a branch, update one owner-approved answer in `content/06-faq.md`, and open a PR. Do not introduce invented test biography.
+2. Verify grammar, grounding, secretless checks, approved live evals, and actual preview access protection.
+3. In a fresh preview conversation, verify the approved answer update within 10 minutes of successful preview publication.
+4. On that reviewed branch, unapprove/remove the test answer and verify a new preview revision no longer supplies it. Restore only content the owner approves for release and rerun affected checks.
+5. Complete preview mobile/avatar/privacy/limit checks and the preview's independent ten-request latency sample. Record preview acceptance; it requires no production result.
+
+**B. After accepted preview: production, before announcement**
+
+1. Deploy the reviewed release to production with isolated production credentials and all controls active; do not announce it yet.
+2. Make another genuine owner-approved FAQ edit through the browser editor and a reviewed PR. Merge to `main` and confirm automatic production deployment.
+3. In a fresh production conversation verify the new answer within 10 minutes of successful publication. Repeat removal/unapproval through a reviewed follow-up and verify no stale prefix/artifact restores the fact.
+4. Repeat the ten-request latency sample independently in production and run mobile/avatar/privacy/limit smoke checks. Any relevant correction requires affected checks to run again.
+5. Record the actual tested production revision, owner final acceptance, real URL, and demonstration before announcing the site.
 
 This uses GitHub's browser editor without bypassing branch protection or uploading content separately.
+
+Application test scripts may use a trusted browser/deployment adapter, but must never add public test-only bypass endpoints, expose secrets, or substitute preview results for production. The full public proof is a postdeployment release gate, not a predeployment prerequisite.
 
 ## 8. What to verify after each implementation commit
 
@@ -125,3 +140,5 @@ This uses GitHub's browser editor without bypassing branch protection or uploadi
 | 7: README | Real live-link status/GIF, approved motivations/reflections, architecture, tradeoffs, voice/video roadmap |
 
 Record actual preview URLs and observed results after each stage. If deployment is not configured, report that blocker instead of claiming preview verification.
+
+The existing [task list](tasks.md) still uses the previous schedule. Reconcile it before implementation: early isolated-service provisioning, content approval before preview activation, preview-only predeployment validation, separate production publication/performance verification after deployment, and sentence-safe 150-word tests. Keep task IDs traceable and ensure the diagram agrees with the dependency table.
