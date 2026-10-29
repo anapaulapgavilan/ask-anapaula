@@ -64,9 +64,9 @@ Vercel supplies client network information; the application must not echo or per
 
 ## 6. Illustrative avatar without voice/video
 
-**Decision**: Self-hosted owner-approved layered SVG, CSS-only nonessential animation, and a typed chat-state reducer. No illustration is invented in this phase.
+**Decision (owner update 2026-10-29)**: Self-hosted owner-supplied PNG, CSS-only whole-image movement/state accents, and a typed chat-state reducer. The owner explicitly chose the supplied raster illustration over layered SVG blinking; do not invent facial layers.
 
-**Rationale**: Blinking, subtle head movement, and thinking/responding accents do not need a large runtime or an external service. Static-by-default styling with a `prefers-reduced-motion: no-preference` enhancement prevents a motion flash on first render. A localized pause control and state text preserve the full experience without movement.
+**Rationale**: Gentle whole-image movement and thinking/responding accents preserve the supplied illustration without redrawing the owner's likeness or adding an external service. Static-by-default styling with a `prefers-reduced-motion: no-preference` enhancement prevents a motion flash on first render. A localized pause control and state text preserve the full experience without movement.
 
 **Alternatives considered**: Lottie/Rive add an asset/runtime workflow not needed for this small state machine; real-time video, lip-sync, TTS, and camera/microphone permissions exceed the owner-selected scope. A talking mouth without audio would misleadingly imply speech.
 

@@ -14,7 +14,10 @@ export const profileSchema = z.strictObject({
   githubUrl: httpsUrl.nullable().default(null),
   photo: z.literal("/photo.jpg").nullable().default(null),
   cv: z.literal("/cv.pdf").nullable().default(null),
-  illustration: z.literal("/avatar/ana-paula.svg").nullable().default(null),
+  illustration: z.literal("/avatar/ana-paula.png").nullable().default(null),
 });
-export const profile = profileSchema.parse({ contactEmail: APPROVED_CONTACT_EMAIL });
+export const profile = profileSchema.parse({
+  contactEmail: APPROVED_CONTACT_EMAIL,
+  illustration: "/avatar/ana-paula.png",
+});
 export type PublicProfile = z.infer<typeof profileSchema>;

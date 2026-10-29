@@ -93,8 +93,8 @@ Use [UI contract](contracts/ui.md) and [API contract](contracts/chat-api.md) for
 2. Confirm approved hero content, valid CV/professional links, four cards, four to six chips, disclaimer, footer, and social metadata.
 3. Submit an English and Spanish question. See incremental text and matching response language. First reply discloses AI.
 4. Observe idle -> thinking -> responding -> idle; Stop preserves partial text and ends responding; failure displays error rather than hanging animation.
-5. Enable reduced motion before page load. Confirm no blink/continuous motion, with static illustration and localized state text. Test pause/resume and system preference changes.
-6. Simulate a missing SVG: explicit localized notice and fallback, with full written conversation still usable.
+5. Enable reduced motion before page load. Confirm no continuous whole-image/accent motion, with static illustration and localized state text. Test pause/resume and system preference changes.
+6. Simulate a missing approved PNG: explicit localized notice and fallback, with full written conversation still usable.
 7. Test Copy, clipboard failure, keyboard focus/order, labels, live-region behavior, contrast, overflow, and 20/21-message plus 1,000/1,001-code-point input boundaries.
 8. Run ten real requests in the private release preview under recorded normal-network/model/revision conditions; at least nine show first model answer text within five seconds. Repeat with ten independent requests in production after deployment and before announcement; do not pool results or count animated feedback/server-authored notices as model text. Sentence buffering is part of the measured delay.
 9. Exercise ordinary answers at the 150-word boundary including disclosure/contact: finish at complete sentences with intact links, no dropped mandatory guidance, and no unfinished token-exhausted tail labeled complete. Test explicit detail requests separately within the provider-token ceiling.

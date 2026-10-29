@@ -24,7 +24,7 @@ Transition: `todo -> approved` requires an explicit owner edit and review agains
 
 - Profile: approved display name, approved biography/one-liner, public email, nullable approved LinkedIn URL, actual GitHub profile URL, nullable approved photo/CV asset references.
 - Project: fixed project identifier, approved display label, nullable approved HTTPS URL, TODO/approved description, display order.
-- Illustration: nullable approved SVG reference, approved layer identifiers for animation, localized accessible description.
+- Illustration: nullable owner-approved PNG reference (`/avatar/ana-paula.png`), whole-image movement with decorative state accents, and localized accessible description; no facial layer animation.
 - No placeholder URL is clickable. Missing required release assets fail readiness, while protected previews clearly show setup placeholders.
 - Profile facts shown in the hero must also be included in approved knowledge if the avatar is expected to state them.
 
@@ -57,7 +57,7 @@ Ordinary output accounting includes visible trusted disclosure/contact plus mode
 | Request/network/validation/rate-limit failure | error | Localized failure/limit text |
 | New accepted submission after an error | thinking | Thinking / Pensando |
 
-Motion state is independent: `systemReducedMotion: boolean`, `visitorPaused: boolean`; movement is enabled only when both are false. Pause does not abort chat. SVG load state is loading/available/unavailable; failure displays a static/text fallback plus a notice without changing request state. No continuous animation is announced to assistive technology.
+Motion state is independent: `systemReducedMotion: boolean`, `visitorPaused: boolean`; movement is enabled only when both are false. Pause does not abort chat. PNG load state is loading/available/unavailable; failure displays a static/text fallback plus a notice without changing request state. No continuous animation is announced to assistive technology.
 
 ## 5. Usage allowance (Redis)
 

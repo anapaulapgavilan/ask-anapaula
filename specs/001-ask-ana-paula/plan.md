@@ -8,7 +8,7 @@
 
 Build a public bilingual career profile with a streaming, CV-grounded chat and an owner-approved illustrated animated avatar. Use one Next.js application on Vercel, ordered Markdown knowledge compiled at build time, Claude through the Vercel AI SDK, and Upstash for exact rolling limits and deliberately minimized question records. No vector database, audio, video, visitor accounts, or server transcript storage.
 
-The avatar is part of the initial release, not a future enhancement: a local SVG illustration with CSS movement responds to actual chat lifecycle events and respects reduced motion and a pause control. Content and visual assets require owner approval; implementation must not manufacture biography, likeness, or first-person motivations.
+The avatar is part of the initial release, not a future enhancement: the PNG supplied and approved by the owner on 2026-10-29 uses whole-image CSS movement and state accents, not layered blinking. It responds to actual chat lifecycle events and respects reduced motion and pause. Draft CV-derived text remains private until owner review; no biography, likeness, or motivation is invented.
 
 Implementation includes T001-T028, T030/T036 and T052/T053/T055/T056: cloud foundation, directly tested streaming/privacy/rolling-allowance modules, namespace checks and an avatar reducer. Codespaces provider and isolated Redis checks passed. Owner console observations are recorded in the README, but T029 policy review remains incomplete. The endpoint stays disabled until all US2/US5 and activation gates pass; illustrated UI, approved content/assets, deployment and release evaluations remain pending.
 
@@ -85,7 +85,7 @@ The current [tasks.md](tasks.md) has been reconciled with this design, including
 content/{00-persona,01-profile,02-experience,03-projects,
          04-stories,05-motivation,06-faq,99-boundaries}.md
 evals/{cases.json,run-evals.ts}
-public/{photo.jpg,cv.pdf,avatar/ana-paula.svg}
+public/{photo.jpg,cv.pdf,avatar/ana-paula.png}
 scripts/{build-knowledge,check-content,check-tokens}.ts
 src/
   app/{layout.tsx,page.tsx,globals.css,opengraph-image.tsx}
@@ -104,7 +104,7 @@ package-lock.json
 README.md
 ```
 
-**Structure Decision**: One deployable application. Keep server secrets, knowledge assembly, and Redis logic server-only; only approved public profile configuration and UI state enter the client bundle. Generated knowledge is ignored by Git and regenerated before development/build/evals. Binary assets and approved SVG are added only after the owner supplies/approves them; missing assets are explicit placeholders, not fake files.
+**Structure Decision**: One deployable application. Keep server secrets, knowledge assembly, and Redis logic server-only; only approved public profile configuration and UI state enter the client bundle. Generated knowledge is ignored by Git and regenerated before development/build/evals. Binary assets are added only after owner approval; the supplied PNG is approved, while photo/public CV remain pending. Missing assets are explicit placeholders, not fake files.
 
 ## Phase 0 - Research Decisions
 
@@ -142,9 +142,9 @@ Use separate HMAC domains for limiting and analytics with `IP_HASH_SECRET`; neve
 
 ### Animated presentation and accessibility
 
-Use an owner-approved, self-hosted layered SVG with stable eye/head/accent groups and CSS transform/opacity animation. No animation SDK, paid service, live camera, audio, or emotion inference. A typed reducer derives idle/thinking/responding/error from request lifecycle, not guessed emotion.
+Use the owner-approved, self-hosted PNG with gentle whole-image CSS transform and surrounding state accents. The owner selected this instead of layered SVG blinking on 2026-10-29. No animation SDK, paid service, live camera, audio, or emotion inference. A typed reducer derives idle/thinking/responding/error from request lifecycle, not guessed emotion.
 
-The CSS default is static; movement is enabled only when the system allows motion and the visitor has not paused it. Idle blinking, subtle movement, thinking and responding accents stop in reduced/paused mode, leaving localized status text and a static image. Accessible status announcements occur only on meaningful state transitions, not every streamed chunk or blink. Asset failure is independent of request failure.
+The CSS default is static; movement is enabled only when the system allows motion and the visitor has not paused it. Whole-image movement and animated state accents stop in reduced/paused mode, leaving localized status text and a static image. Accessible status announcements occur only on meaningful state transitions, not every streamed chunk or animation frame. Asset failure is independent of request failure.
 
 ### CI, previews, deployment, and evaluation
 
@@ -204,7 +204,7 @@ The reconciled [tasks.md](tasks.md) retains T001-T070: T008 provisions isolated 
 | FR-015-017, FR-024 | HMAC domains, safe catalog/null logs, TTL assertions, scoped secrets, outage/error tests |
 | FR-018-020 | Branch/preview workflow, trusted exact-revision eval gate, browser FAQ redeploy smoke test |
 | FR-022-023 | Recruiter README order, cloud quickstart, owner asset/content approvals |
-| FR-025-028 | SVG state reducer, reduced-motion/pause, asset-failure and lifecycle browser checks |
+| FR-025-028 | PNG avatar state reducer, reduced-motion/pause, asset-failure and lifecycle browser checks |
 
 ## Complexity Tracking
 

@@ -108,7 +108,7 @@ All eight knowledge files start as clear `TODO:` templates. Ana Paula fills and 
 - Actions: "Chat with my AI", "Download CV", "GitHub", "LinkedIn".
 - Chat: 4-6 starter chips, incremental text, Stop, Copy answer, visible disclaimer under input.
 - Initial release includes an illustrated animated avatar, not only a conversational text interface. Place it beside chat on desktop and immediately above it on mobile, without obscuring messages or controls.
-- `AnimatedAvatar.tsx`: subtle blinking and idle movement; distinct thinking, responding, and error states driven by real chat lifecycle events. Stop and completion return to idle; request failure ends the responding animation and shows the error state.
+- `AnimatedAvatar.tsx`: owner-approved PNG with gentle whole-image idle movement and surrounding state accents, without layered blinking (owner decision 2026-10-29); distinct thinking, responding, and error states driven by real chat lifecycle events. Stop and completion return to idle; request failure ends the responding animation and shows the error state.
 - No synthesized voice, lip-sync, realistic video, microphone, or camera integration in this release. Keep the approved hero photo separate from the illustrated avatar.
 - Respect `prefers-reduced-motion` from first render and provide a localized keyboard-accessible pause-animation control. Disable nonessential movement in either mode, preserve static state indicators and localized status text, and avoid flashing or repetitive assistive-technology announcements.
 - Asset or animation failures must preserve usable chat and show an accessible localized notice plus a static or text fallback. Test both themes, mobile/desktop layout, and all lifecycle transitions.

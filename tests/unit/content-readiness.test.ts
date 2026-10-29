@@ -13,7 +13,7 @@ describe("release readiness", () => {
     expect(issues).toContain("Missing approved profile: biography");
   });
   it("detects missing asset files even when references are configured", () => {
-    const approved = profileSchema.parse({ ...profile, displayName: "Synthetic profile", biography: "Synthetic bio", oneLiner: "Synthetic title", photo: "/photo.jpg", cv: "/cv.pdf", illustration: "/avatar/ana-paula.svg" });
+    const approved = profileSchema.parse({ ...profile, displayName: "Synthetic profile", biography: "Synthetic bio", oneLiner: "Synthetic title", photo: "/photo.jpg", cv: "/cv.pdf", illustration: "/avatar/ana-paula.png" });
     const sections = KNOWLEDGE_FILES.map((path) => ({ path }));
     expect(readinessIssues(sections, approved, projects, [])).toContain("Approved asset file unavailable: cv");
     expect(readinessIssues(sections, approved, projects, ["photo", "cv", "illustration"])).toEqual([]);

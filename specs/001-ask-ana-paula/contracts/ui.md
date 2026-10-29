@@ -18,14 +18,14 @@ Use the state transitions in [data-model.md](../data-model.md). `AnimatedAvatar`
 
 | State | Normal-motion presentation | Reduced/paused presentation |
 |---|---|---|
-| idle | Subtle blink and gentle head movement | Static approved illustration |
-| thinking | Distinct restrained accent/head reaction | Static image and Thinking/Pensando text |
-| responding | Distinct response accent/movement, no implied audio/lip-sync | Static image and Responding/Respondiendo text |
+| idle | Subtle whole-image movement, no layered blinking | Static approved illustration |
+| thinking | Restrained surrounding accent and visual state indicator | Static image and Thinking/Pensando text |
+| responding | Distinct surrounding accent/whole-image reaction, no implied audio/lip-sync | Static image and Responding/Respondiendo text |
 | error | Non-continuous error indicator, no responding motion | Static image and localized error text |
 
 No human-live indicator or implied emotion detection. No microphone/camera/voice APIs. Stop/completion immediately return the animation to idle; error stays visibly non-responding until dismissed or a new submission starts.
 
-The approved SVG is self-hosted, reviewed to remove scripts, external references, and event handlers, and optimized without destroying the named animation layers. Never render untrusted SVG supplied by visitors. SVG fetch/load errors yield an accessible localized notice and static/text fallback; written chat remains functional.
+The owner-approved PNG is self-hosted at `public/avatar/ana-paula.png`; verify its signature, dimensions and absence of text metadata against the approved asset. Do not invent SVG layers or facial movement. Never render visitor-supplied image markup. Image load errors yield an accessible localized notice and static/text fallback; written chat remains functional.
 
 ## Motion and accessibility
 
@@ -33,8 +33,8 @@ The approved SVG is self-hosted, reviewed to remove scripts, external references
 - Localized Pause animation / Resume animation control supports keyboard and exposes pressed/state semantics; reduced-motion users are never overridden into continuous movement by the control.
 - System preference changes take effect immediately. Pause choice may persist as a non-sensitive local preference; conversation text never does.
 - No flashing; continuous motion can be paused. Animation cannot steal focus or move the input/messages.
-- Meaningful localized status changes use a polite live region; do not announce every blink, streamed token, or decorative SVG layer.
-- Label the figure once; hide decorative layers from assistive technology. Keep the written response as the authoritative accessible answer.
+- Meaningful localized status changes use a polite live region; do not announce every animation frame, streamed token, or decorative accent.
+- Label the figure once; hide decorative accents from assistive technology. Keep the written response as the authoritative accessible answer.
 - All controls have visible focus, labels, and WCAG 2.2 AA contrast in both themes. Input errors associate with the input; response errors and copy failures are announced.
 
 ## Language and theme

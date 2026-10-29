@@ -16,6 +16,11 @@
 - Q: Where must the first-answer-text performance target pass? A: Both the release preview and production must independently meet it before the site is announced.
 - Q: What happens when an ordinary answer reaches the 150-word ceiling before completion? A: Finish at the last complete sentence within the limit, preserving complete links and any required AI disclosure/contact inside that limit; the visitor can request more detail.
 
+### Owner update 2026-10-29
+
+- The owner supplied and approved the PNG illustration for the avatar. Use subtle whole-image movement and distinct visual state indicators, not layered blinking or simulated speech. Keep reduced-motion, pause and failure behavior unchanged.
+- The source CV is private and outside the application repository. Prepare a professional EN/ES draft excluding private contact and internal business/system details; owner review is required before publishing any drafted text. The original CV is not approved as a public download.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Ask trustworthy career questions (Priority: P1)
@@ -74,9 +79,9 @@ A recruiter on a phone or desktop meets an illustrated, animated representation 
 7. **Given** the project section, **When** reviewed, **Then** it contains Mi Inflacion, Remesas MX, Unit Economics Lab, and Fintech for Lawyers; unset links are clearly unavailable rather than clickable placeholders.
 8. **Given** a 360-pixel-wide screen or keyboard-only navigation, **When** all primary controls are used, **Then** no primary content overflows horizontally, focus remains visible, controls are labeled, and contrast meets WCAG 2.2 AA.
 9. **Given** no saved theme preference, **When** the page opens, **Then** light mode is selected and a working dark-mode option is available.
-10. **Given** the conversation area in normal motion mode, **When** it opens, **Then** an owner-approved illustrated avatar is visible alongside the chat, with subtle blinking and idle movement; it does not replace the profile photo or imply a live human connection.
+10. **Given** the conversation area in normal motion mode, **When** it opens, **Then** the owner-approved PNG avatar is visible alongside the chat, with subtle whole-image idle movement and visual state indicators, without layered blinking; it does not replace the profile photo or imply a live human connection.
 11. **Given** an accepted question, **When** the response is pending, streaming, or completed, **Then** the avatar respectively shows a thinking reaction, a responding reaction, and its idle state; Stop or an error ends the responding reaction.
-12. **Given** a reduced-motion system preference or the visitor's pause-animation control, **When** the conversation is used, **Then** blinking and continuous movement are disabled while a static illustration and localized text still convey the current response state.
+12. **Given** a reduced-motion system preference or the visitor's pause-animation control, **When** the conversation is used, **Then** continuous movement is disabled while a static illustration and localized text still convey the current response state.
 13. **Given** the illustration or animation cannot load, **When** the visitor asks a question, **Then** the chat and its controls remain usable, a labeled static or text fallback appears, and an accessible notice explains the unavailable animation.
 
 ---
@@ -164,7 +169,7 @@ A visitor receives understandable feedback when a conversation is too long, a da
 - **FR-022**: Recruiter-facing documentation MUST contain a truthful live-link status, chat demonstration, owner-approved motivation, architecture explanation, design rationale, learning reflections, and the requested future roadmap; unavailable items MUST be labeled rather than invented.
 - **FR-023**: All development and application verification MUST occur in the cloud development workspace; no local application build or personal-source upload is required.
 - **FR-024**: Credentials MUST never be committed or exposed to visitors, logs, previews from untrusted changes, or the public content collection.
-- **FR-025**: The initial release MUST include an owner-approved illustrated avatar beside or immediately above the written chat, with subtle blinking and idle movement, plus distinct thinking and responding reactions tied to actual request and streaming states.
+- **FR-025**: The initial release MUST include the owner-approved PNG avatar beside or immediately above the written chat, with subtle whole-image idle movement (no layered blinking), plus distinct thinking and responding visual states tied to actual request and streaming events.
 - **FR-026**: The avatar MUST return to idle on completion or Stop and show a non-responding error state on failure; it MUST NOT imply live human presence, synthesize speech, or require microphone/camera access.
 - **FR-027**: Visitors MUST be able to pause nonessential animation using a keyboard-accessible, localized control; reduced-motion system preferences MUST disable continuous movement by default, with equivalent localized text conveying conversation states.
 - **FR-028**: An unavailable illustration or animation MUST produce an accessible notice and static or text fallback without blocking chat; avatar layout and controls MUST remain usable on mobile and in both themes.

@@ -25,7 +25,7 @@ flowchart LR
 
 - A small approved corpus will be compiled at build time; no vector database.
 - Stable prompt caching and exact rolling rate limits are independently verified modules, not integrated release guarantees. Full factual/boundary evaluations and real deployment acceptance remain release gates.
-- No photo, CV, biography, or illustration is published before owner approval.
+- Only owner-approved assets/text are published. The supplied avatar PNG is approved; the photo, public CV and biographical draft remain unapproved.
 - Development and application verification run only in GitHub Codespaces.
 
 ## What I learned
@@ -91,8 +91,10 @@ Set secrets through Codespaces/Vercel settings, never committed files or command
 
 ### Independent avatar lifecycle
 
+- Owner approval on 2026-10-29: the supplied PNG is stored unchanged at `public/avatar/ana-paula.png` (793 x 700). Signature, dimensions, checksum and absence of text metadata are tested. The owner selected gentle whole-image motion/state accents rather than layered SVG blinking. T037 is complete; T038 browser presentation is not. The original attachment was not modified and the illustration does not substitute for the hero photo.
+
 - T030/T036 cover idle, thinking, responding and error, Stop/finish/error cleanup, stale-request event rejection, and single-active-request behavior. Asset loading/failure, reduced motion and manual pause remain independent of requests.
-- Initial motion is disabled until system preference is known; manual resume cannot override reduced motion. Missing assets do not stop written responses. This reducer is not yet wired to browser chat: illustration approval T037 and the full UI/accessibility matrix remain pending.
+- Initial motion is disabled until system preference is known; manual resume cannot override reduced motion. Missing assets do not stop written responses. This reducer and approved image are not yet wired to browser chat: the full UI/accessibility matrix remains pending.
 
 ### Exact rolling allowance and namespace verification
 
@@ -118,7 +120,11 @@ The application currently supports one HMAC secret, not dual-key overlap. Use co
 - Eight owner-editable templates exist in [content/](content/), including 14 requested FAQ questions and 25 empty extension slots. No personal facts are approved.
 - `npm run content:build` compiles only approved Markdown sections into ignored server-only generated data. It runs before dev, build, and typecheck. The current result has zero approved sections; this is expected, not release readiness.
 - Approval grammar, unsafe markup/URL rejection, deterministic output, fact removal, and failure cleanup are covered by synthetic tests. Synthetic fixtures never become public knowledge.
-- Foundation T007-T012 is complete: typed public configuration represents unapproved facts/assets as null, server configuration rejects invalid values without exposing them, chat defaults disabled, and strict normalized text-only requests enforce 1,000-code-point/20-message boundaries. Content check/readiness commands exist; readiness correctly fails on the 14 current approval gaps.
+- Foundation T007-T012 is complete: unapproved facts/assets remain null; the approved PNG is configured separately. Server configuration rejects invalid values without exposing them, chat defaults disabled, and strict normalized requests enforce 1,000-code-point/20-message boundaries. Content checks now report 13 release gaps after illustration approval; readiness still fails.
 - Vercel verification, once hosting is available: the setup page must remain unchanged and chat disabled with empty templates. Actual FAQ-answer publication cannot be checked until the API, approved content, trusted hosting, and controls exist.
 
 See [implementation tasks](specs/001-ask-ana-paula/tasks.md) for completed work and remaining gates.
+
+### Private CV draft status (2026-10-29)
+
+The owner authorized a professional bilingual draft for review, not direct publication. The source CV was read locally from outside this application repository; neither it nor its draft was uploaded to GitHub/Codespaces or imported as evidence. Personal contact details and internal business/system metrics were excluded. All knowledge sections remain unapproved. No questionnaire content was read. Avatar-import verification: 111 unit/contract tests, two setup browser/axe tests, lint, typecheck and production build passed; paid model/Redis checks were not repeated because those modules did not change.
