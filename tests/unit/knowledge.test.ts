@@ -17,15 +17,15 @@ const sources = (replacement: string, file = "01-profile.md") => ({
 });
 
 describe("approved Markdown compilation", () => {
-  it("uses exactly eight templates and 39 empty initial FAQ answers", () => {
+  it("preserves eight documents and all 39 FAQ slots while compiling approved sections", () => {
     expect(Object.keys(templates).sort()).toEqual([...KNOWLEDGE_FILES]);
     expect(templates["06-faq.md"].match(/^## /gm)).toHaveLength(39);
-    expect(templates["06-faq.md"].match(/^Answer:$/gm)).toHaveLength(39);
+    expect(templates["06-faq.md"].match(/^Answer:/gm)).toHaveLength(39);
     expect(templates["06-faq.md"].match(/^## TODO:/gm)).toHaveLength(25);
     const result = compileKnowledge(templates);
-    expect(result.sections).toEqual([]);
-    expect(result.evidence).toBe("");
-    expect(result.diagnostics).toHaveLength(8);
+    expect(result.sections.length).toBeGreaterThan(0);
+    expect(result.sections.every((section) => templates[section.path].includes("status:approved"))).toBe(true);
+    expect(result.diagnostics.length).toBeLessThan(8);
   });
 
   it("includes only approved bodies, excluding TODO headings and question premises", () => {
@@ -33,7 +33,7 @@ describe("approved Markdown compilation", () => {
       "# Synthetic\n\n## Did I win an unverified award?\n<!-- status:approved -->\nAnswer: No such award is documented.\n\n## Hidden achievement\n<!-- status:todo -->\nAnswer: A fabricated fact.\n",
       "06-faq.md",
     ));
-    expect(result.sections[0].body).toBe("No such award is documented.");
+    expect(result.sections.find((item) => item.path === "06-faq.md")?.body).toBe("No such award is documented.");
     expect(result.evidence).not.toContain("Did I win");
     expect(result.evidence).not.toContain("Hidden achievement");
     expect(result.evidence).not.toContain("fabricated fact");
@@ -45,7 +45,7 @@ describe("approved Markdown compilation", () => {
     expect(compileKnowledge(Object.fromEntries(Object.entries(input).reverse()))).toEqual(result);
     expect(compileKnowledge(sources(section("A different synthetic statement."))).revision).not.toBe(result.revision);
     expect(compileKnowledge(templates).evidence).not.toContain("fictional fixture");
-    expect(compileKnowledge(sources(fixture.replace("approved", "todo"))).sections).toEqual([]);
+    expect(compileKnowledge(sources(fixture.replace("approved", "todo"))).sections.filter((item) => item.path === "01-profile.md")).toEqual([]);
   });
 
   it("rejects unexpected or missing source files", () => {
@@ -93,7 +93,7 @@ describe("approved Markdown compilation", () => {
   it("handles Unicode, safe links and headings inside fenced code as content", () => {
     const body = "Una demostraci\u00f3n sint\u00e9tica.\n\n[Example](https://example.test)\n\n```text\n## Not a real heading\n<!-- status:todo -->\n```\n";
     const result = compileKnowledge(sources(section(body)));
-    expect(result.sections).toHaveLength(1);
+    expect(result.sections.filter((item) => item.path === "01-profile.md")).toHaveLength(1);
     expect(result.sections[0].body).toContain("Not a real heading");
     expect(result.sections[0].body).toContain("sint\u00e9tica");
   });
@@ -130,8 +130,8 @@ describe("approved Markdown compilation", () => {
       const serialized = await readFile(output, "utf8");
       expect(await buildKnowledge(root)).toEqual(first);
       expect(await readFile(output, "utf8")).toBe(serialized);
-      await writeFile(join(root, "content/01-profile.md"), templates["01-profile.md"]);
-      expect((await buildKnowledge(root)).sections).toEqual([]);
+      await writeFile(join(root, "content/01-profile.md"), templates["01-profile.md"].replaceAll("status:approved", "status:todo"));
+      expect((await buildKnowledge(root)).sections.filter((item) => item.path === "01-profile.md")).toEqual([]);
       await writeFile(join(root, "content/private-cv.md"), fixture);
       await expect(buildKnowledge(root)).rejects.toThrow(/Unexpected/);
       await expect(readFile(output, "utf8")).rejects.toMatchObject({ code: "ENOENT" });

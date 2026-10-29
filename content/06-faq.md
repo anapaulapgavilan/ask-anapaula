@@ -1,18 +1,18 @@
 # FAQ template
 
-TODO: All answers are intentionally empty. Question premises are not facts. Complete an answer, review it against the CV, and change its marker to approved only when ready.
+Las siguientes respuestas seleccionadas fueron aprobadas por la propietaria a partir de su CV. Las demás preguntas siguen sin respuesta aprobada y no son evidencia.
 
 ## Who are you, in 30 seconds?
-<!-- status:todo -->
-Answer:
+<!-- status:approved -->
+Answer: Estudié Economía en el ITAM y desarrollo de software en 42, en Bilbao y Madrid. Actualmente trabajo como Lead AI Engineer en Grupo PagaTodo. Mi experiencia abarca análisis financiero, ciencia de datos, automatización e iniciativas de inteligencia artificial.
 
 ## Why did you study software engineering at 42 after an economics degree at ITAM?
 <!-- status:todo -->
 Answer:
 
 ## What is the most impactful thing you've built?
-<!-- status:todo -->
-Answer:
+<!-- status:approved -->
+Answer: Mi CV documenta estudios de Economía en el ITAM y desarrollo de software en 42. No especifica una motivación personal para estudiar software; puedo compartir los datos de mi formación sin inventar una razón.
 
 ## Tell me about leading the AI customer-support project.
 <!-- status:todo -->
@@ -23,8 +23,8 @@ Answer:
 Answer:
 
 ## What did you learn from running the AI internship program?
-<!-- status:todo -->
-Answer:
+<!-- status:approved -->
+Answer: Mi CV registra que en Paga Todo diseñé y coordiné un programa de prácticas de seis semanas, con 12 participantes y 18 mentores de tres unidades de negocio. No afirma que haya obtenido un resultado concreto de los proyectos propuestos.
 
 ## What did show jumping teach you?
 <!-- status:todo -->
@@ -35,16 +35,16 @@ Answer:
 Answer:
 
 ## Why an MBA? Why now?
-<!-- status:todo -->
-Answer:
+<!-- status:approved -->
+Answer: En Grupo PagaTodo lidero iniciativas de IA y un equipo multidisciplinario. También capacito a personal no técnico en herramientas de IA. No divulgo métricas internas de adopción ni detalles confidenciales.
 
 ## What do you want to do after business school?
 <!-- status:todo -->
 Answer:
 
 ## What is a failure you learned from?
-<!-- status:todo -->
-Answer:
+<!-- status:approved -->
+Answer: El CV registra que participé en Del Venado en 2022, apoyando a familias artesanas mazahuas a vender ropa bordada en Ciudad de México y en actividades de plantación de árboles. No especifica un aprendizaje personal.
 
 ## How do you lead people who are not technical?
 <!-- status:todo -->

@@ -117,14 +117,20 @@ The application currently supports one HMAC secret, not dual-key overlap. Use co
 
 ### Independent knowledge foundation
 
-- Eight owner-editable templates exist in [content/](content/), including 14 requested FAQ questions and 25 empty extension slots. No personal facts are approved.
-- `npm run content:build` compiles only approved Markdown sections into ignored server-only generated data. It runs before dev, build, and typecheck. The current result has zero approved sections; this is expected, not release readiness.
+- Eight owner-editable content files exist in [content/](content/), including 14 requested FAQ questions and 25 empty extension slots. The owner approved 15 CV-derived sections in five documents; no questionnaire content was read.
+- `npm run content:build` compiles only approved Markdown sections into ignored server-only generated data. It runs before dev, build, and typecheck. Current revision `8632f94a7c93486b4dd2928e83b932106cc04fc57211673495343b5c8464d4c0` contains 15 approved sections; three documents still await owner content. The artifact stays server-only.
 - Approval grammar, unsafe markup/URL rejection, deterministic output, fact removal, and failure cleanup are covered by synthetic tests. Synthetic fixtures never become public knowledge.
-- Foundation T007-T012 is complete: unapproved facts/assets remain null; the approved PNG is configured separately. Server configuration rejects invalid values without exposing them, chat defaults disabled, and strict normalized requests enforce 1,000-code-point/20-message boundaries. Content checks now report 13 release gaps after illustration approval; readiness still fails.
+- Foundation T007-T012 and case inventory T044 are complete. Unapproved facts/assets remain unavailable; the owner-approved PNG is configured separately. Strict normalized requests enforce 1,000-code-point/20-message boundaries. `content:ready` correctly remains blocked with eight gaps: persona, project descriptions/URLs, motivation, approved public profile configuration, public photo, and redacted public CV. The original source CV is not in this repository.
 - Vercel verification, once hosting is available: the setup page must remain unchanged and chat disabled with empty templates. Actual FAQ-answer publication cannot be checked until the API, approved content, trusted hosting, and controls exist.
 
 See [implementation tasks](specs/001-ask-ana-paula/tasks.md) for completed work and remaining gates.
 
 ### Private CV draft status (2026-10-29)
 
-The owner authorized a professional bilingual draft for review, not direct publication. The source CV was read locally from outside this application repository; neither it nor its draft was uploaded to GitHub/Codespaces or imported as evidence. Personal contact details and internal business/system metrics were excluded. All knowledge sections remain unapproved. No questionnaire content was read. Avatar-import verification: 111 unit/contract tests, two setup browser/axe tests, lint, typecheck and production build passed; paid model/Redis checks were not repeated because those modules did not change.
+The owner approved the selected professional bilingual draft. Its CV-derived sections are now in the public knowledge files after review; the source CV remains outside this repository. Personal phone/address and internal business/system details are excluded. Motivation, project details, public CV and photo remain pending. No questionnaire content was read. The draft itself remains a private review artifact and is not committed.
+
+- Evaluation inventory: 24 cases, balanced 12 EN / 12 ES; supported, refusal, instruction-override and unknown cases cite compiled section IDs. Four unsupported project/motivation cases are explicitly `blocked`, not fabricated or treated as passing.
+- Compiler regression tests now verify mixed approved/TODO content rather than assume the live corpus remains entirely empty.
+- After the content change, `content:check` passes and `content:build` compiles 15 approved sections with three documents awaiting review. `content:ready` correctly fails on the eight listed release gaps.
+- Chat remains disabled. No deployment or full model evaluation has been claimed.
+- Final content-revision checks passed: lint, typecheck, 111 unit/contract tests, the real Anthropic bilingual smoke matrix, live token count of 2,464 (below 30,000), two setup browser/axe tests, and production build. Anthropic reported 2,447 cache-read tokens and no cache writes in the two calls; no future cache behavior is guaranteed.
