@@ -37,7 +37,7 @@ Required package scripts to implement:
 | `lint` | ESLint CLI |
 | `typecheck` | Strict TypeScript, no emit |
 | `test` | Vitest unit/contracts; explicit excludes for live integrations |
-| `test:integration` | Isolated real Redis boundary/concurrency/expiry tests |
+| `test:integration` | Real Anthropic smoke and isolated Redis privacy/TTL checks exist; exact limiter boundary/concurrency tests are still pending |
 | `test:e2e` | Default selects only the Playwright `mocked` project; explicit live projects require trusted target configuration |
 | `evals` | Real model, real system prompt, case report, nonzero fail/blocked |
 | `build` | Compile knowledge then production Next build |

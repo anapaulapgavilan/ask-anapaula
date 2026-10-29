@@ -10,7 +10,7 @@ TODO: Ana Paula will supply and approve three sentences about her motivation.
 
 ## How it works
 
-The setup page, approved-Markdown compiler and disabled chat endpoint exist. The streaming backend is tested directly; public chat, Redis enforcement/logging integration and the illustrated UI are not yet active:
+The setup page, approved-Markdown compiler, disabled chat endpoint and independent privacy modules exist. Streaming and minimized Redis persistence are tested directly; public chat, rate enforcement, route logging integration and the illustrated UI are not yet active:
 
 ```mermaid
 flowchart LR
@@ -73,6 +73,15 @@ Set secrets through Codespaces/Vercel settings, never committed files or command
 - The current trusted token check passed at 578 tokens including its synthetic envelope. Repeated real calls reported 561 cache-read tokens. This does not predict cache behavior for future approved content or models.
 - The selected model rejects completely disabled thinking. Use the supported `between_tools` mode (no up-front thinking), no tools, and suppress all reasoning from visible streams. Model changes require a fresh compatibility/evaluation run.
 - Vercel preview is still not verified. Once connected, confirm setup-only UI and a contact-bearing 503 from the disabled endpoint, with no public model generation. Hosting-duration support, rate limiting, privacy policy approval, content/assets, illustrated UI and full release evaluations remain pending.
+
+### Privacy module verification (not stage-5 activation)
+
+- Canonical IPv4/IPv6 aliases produce the same identity; rate and analytics IDs use separate HMAC domains. Only `x-vercel-forwarded-for` within the Vercel deployment boundary is accepted, never arbitrary forwarding headers in Codespaces.
+- Question text is retained only on exact normalized match to the identifier-free safe catalog; all other free text becomes `null`. Exactly four fields are written atomically with a 30-day TTL. Real isolated Redis tests verify both persistence and sanitized write rejection, then delete only test-created keys.
+- Bilingual refusal/injection fixtures and localized AI/privacy components exist. Prompt inspection is not proof of model refusal; the full live adversarial evaluation suite remains pending.
+- T022-T028 are verified independently. T029 remains blocked on owner review of actual Anthropic account retention and hosting/Redis logging/retention settings. No zero-retention or global anonymity guarantee is made. The components are not yet wired into the setup page, and the endpoint remains disabled.
+- Keep this integration Redis isolated from future preview/production data. Do not rotate `IP_HASH_SECRET` without the overlapping-window controls required by the plan.
+- Vercel verification remains pending hosting: confirm no active chat or collection of visitor questions; later verify the real footer and controls only after route/UI integration.
 
 ### Independent knowledge foundation
 
