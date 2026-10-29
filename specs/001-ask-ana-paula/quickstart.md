@@ -1,6 +1,6 @@
 # Quickstart and Validation Guide: Ask Ana Paula
 
-Implementation is partial: setup-only UI, cloud tooling, approved-Markdown compilation, configuration, strict request validation and the disabled streaming backend exist. Content build/check/readiness/token commands are implemented; readiness correctly fails until public content/assets are approved. The direct real-provider smoke test runs through `npm run test:integration -- tests/integration/anthropic.test.ts`. Public chat, full Redis integrations, illustrated UI, the evaluation runner and deployment acceptance remain pending. Commands describing pending features are not yet runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
+Implementation is partial: setup-only UI, approved-Markdown compilation, configuration, disabled streaming backend, independent privacy/exact allowance modules and an avatar lifecycle reducer exist. Content readiness correctly fails until public content/assets are approved. The direct real-provider smoke test runs through `npm run test:integration -- tests/integration/anthropic.test.ts`; isolated Redis checks use `npm run test:integration -- tests/integration/log.test.ts tests/integration/rate-limit.test.ts`. Public chat, route integration, illustrated UI, evaluations and deployment acceptance remain pending. Commands describing pending features are not runnable proof. See [task status](tasks.md) and [repository status](../../README.md).
 
 ## 1. Prerequisites
 
@@ -37,7 +37,7 @@ Required package scripts to implement:
 | `lint` | ESLint CLI |
 | `typecheck` | Strict TypeScript, no emit |
 | `test` | Vitest unit/contracts; explicit excludes for live integrations |
-| `test:integration` | Real Anthropic smoke and isolated Redis privacy/TTL checks exist; exact limiter boundary/concurrency tests are still pending |
+| `test:integration` | Explicitly selected real Anthropic smoke or isolated Redis privacy/TTL and exact rolling-limit concurrency/boundary tests; route outage integration remains pending |
 | `test:e2e` | Default selects only the Playwright `mocked` project; explicit live projects require trusted target configuration |
 | `evals` | Real model, real system prompt, case report, nonzero fail/blocked |
 | `build` | Compile knowledge then production Next build |

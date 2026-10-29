@@ -96,7 +96,7 @@
 
 ### Tests for User Story 3
 
-- [ ] T030 [P] [US3] Add lifecycle reducer tests in `tests/unit/avatar-state.test.ts` for idle/thinking/responding/error, stop/completion/error cleanup, independent asset failure, system reduced-motion changes, and manual pause without aborting chat.
+- [X] T030 [P] [US3] Add lifecycle reducer tests in `tests/unit/avatar-state.test.ts` for idle/thinking/responding/error, stop/completion/error cleanup, independent asset failure, system reduced-motion changes, and manual pause without aborting chat.
 - [ ] T031 [P] [US3] Add Playwright tests in `tests/e2e/chat.spec.ts` for strict SDK transport payloads, starter submissions, incremental text, one active request, Stop preserving partial text, Copy success/failure, visible disclaimer, input/history limits, fresh conversation, and no automatic retries/transcript storage.
 - [ ] T032 [P] [US3] Add Playwright/axe checks in `tests/e2e/avatar-accessibility.spec.ts` for both languages/themes/viewports, first-render reduced motion, paused computed animations, no residual responding state, missing SVG notice/fallback, focus, contrast, status announcements, and zero horizontal overflow.
 
@@ -105,7 +105,7 @@
 - [ ] T033 [P] [US3] Implement approved-data-only profile and project presentation in `src/components/Hero.tsx` and `src/components/ProjectCards.tsx`, with clearly unavailable missing CV/photo/social/project destinations rather than fake claims, assets, or clickable placeholder URLs.
 - [ ] T034 [P] [US3] Implement complete EN/ES UI dictionaries and light-default/theme/language controls in `src/lib/i18n.ts`, `src/components/LanguageToggle.tsx`, and `src/components/ThemeToggle.tsx`; persist only non-sensitive preferences and never rewrite messages or restart an active request.
 - [ ] T035 [US3] Implement `src/components/Chat.tsx` and `src/components/SuggestedQuestions.tsx` with `useChat`/`DefaultChatTransport` request preparation matching the strict schema, four to six localized chips, bounded submission, safe rendering, streaming/stop/copy/error states, and deliberate fresh-chat handling for oversized history.
-- [ ] T036 [US3] Implement the typed state reducer in `src/lib/avatar-state.ts` from real request/first-text/finish/abort/error events, keeping motion and asset availability independent; pass T030 without inferring emotions or human presence.
+- [X] T036 [US3] Implement the typed state reducer in `src/lib/avatar-state.ts` from real request/first-text/finish/abort/error events, keeping motion and asset availability independent; pass T030 without inferring emotions or human presence.
 - [ ] T037 [US3] Obtain owner approval for a layered illustration and review/sanitize the supplied `public/avatar/ana-paula.svg` for scripts, external references, event handlers, and stable eye/head/accent groups; if unavailable, keep this task blocked and use only a clearly labeled setup fallback.
 - [ ] T038 [US3] Implement `src/components/AnimatedAvatar.tsx` and avatar styles in `src/app/globals.css` with approved SVG, subtle idle blinking/movement and thinking/responding reactions, static-by-default reduced-motion handling, localized keyboard pause/resume, meaningful status text, and nonblocking asset-failure notice.
 - [ ] T039 [US3] Compose Hero, chat/avatar, cards, disclaimer, footer, controls, and responsive editorial styling in `src/app/page.tsx` and `src/app/globals.css`; wire T036 to actual chat lifecycle, preserve input focus, and keep the hero photo distinct from the illustration.
@@ -146,14 +146,14 @@
 
 ### Tests for User Story 5
 
-- [ ] T052 [P] [US5] Add limiter unit tests in `tests/unit/rate-limit.test.ts` for exact `(now-24h,now]` semantics, server time, unique claims, accurate Retry-After, no refund on stopped/failed requests, and failure without local/approximate fallback.
-- [ ] T053 [P] [US5] Add real Redis tests in `tests/integration/rate-limit.test.ts` for more than 25 concurrent claims, individual expiry boundaries, 24-hour key TTL, rejected-claim expiry behavior, isolated prefixes, and test-only clock injection unavailable through production request headers.
+- [X] T052 [P] [US5] Add limiter unit tests in `tests/unit/rate-limit.test.ts` for exact `(now-24h,now]` semantics, server time, unique claims, accurate Retry-After, no refund on stopped/failed requests, and failure without local/approximate fallback.
+- [X] T053 [P] [US5] Add real Redis tests in `tests/integration/rate-limit.test.ts` for more than 25 concurrent claims, individual expiry boundaries, 24-hour key TTL, rejected-claim expiry behavior, isolated prefixes, and test-only clock injection unavailable through production request headers.
 - [ ] T054 [P] [US5] Add route/UI failure tests in `tests/contracts/chat-errors.test.ts` and `tests/e2e/chat-errors.spec.ts` for malformed/oversized/history-boundary requests, 429/contact/Retry-After, limiter/log outages, unavailable attribution, provider failure, pre/post-stream deadlines, and labeled incomplete partial answers.
 
 ### Implementation for User Story 5
 
-- [ ] T055 [US5] Implement one atomic Redis server-time prune/count/add/expiry Lua operation and its typed adapter in `src/lib/rate-limit.ts`, keyed by T024 limit HMAC; enforce exactly 25 claims per rolling day without approximated windows or client-time trust.
-- [ ] T056 [US5] Harden and verify the existing T025 shared Redis client/namespace configuration in `src/lib/redis.ts` and `src/lib/env.ts` for limiter integration; assert production/preview/test isolation, no printed credentials, and no-reset HMAC rotation handling in `README.md`. Reuse services provisioned in T008; do not make earlier Redis tests depend on this later hardening.
+- [X] T055 [US5] Implement one atomic Redis server-time prune/count/add/expiry Lua operation and its typed adapter in `src/lib/rate-limit.ts`, keyed by T024 limit HMAC; enforce exactly 25 claims per rolling day without approximated windows or client-time trust.
+- [X] T056 [US5] Harden and verify the existing T025 shared Redis client/namespace configuration in `src/lib/redis.ts` and `src/lib/env.ts` for limiter integration; assert production/preview/test isolation, no printed credentials, and no-reset HMAC rotation handling in `README.md`. Reuse services provisioned in T008; do not make earlier Redis tests depend on this later hardening.
 - [ ] T057 [US5] Integrate canonical identity, allowance claim, then minimized question write before generation in `src/app/api/chat/route.ts`; claim failures reject closed, log failures produce explicit unavailable errors, and stopped/failed requests keep their consumed allowance.
 - [ ] T058 [US5] Implement the complete localized pre-stream JSON status/code/contact contract and sanitized midstream errors in `src/app/api/chat/route.ts` and `src/lib/chat-stream.ts`; apply 45-second application/60-second route ceilings only after confirming hosting support, and avoid raw payload/provider diagnostics.
 - [ ] T059 [US5] Wire friendly validation/limit/contact/retry/setup/error displays and incomplete partial-answer labels in `src/components/Chat.tsx` and `src/lib/i18n.ts`; preserve Copy/Stop accessibility and ensure every failure ends responding animation without automatic retries.

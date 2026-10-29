@@ -10,7 +10,7 @@ Build a public bilingual career profile with a streaming, CV-grounded chat and a
 
 The avatar is part of the initial release, not a future enhancement: a local SVG illustration with CSS movement responds to actual chat lifecycle events and respects reduced motion and a pause control. Content and visual assets require owner approval; implementation must not manufacture biography, likeness, or first-person motivations.
 
-Implementation now includes completed T001-T021: cloud setup/foundation and a directly tested streaming backend. Codespaces provider generation, token counting, repeated-prefix cache usage and stop/deadline behavior passed. The endpoint remains deliberately disabled until US2/US5 controls are integrated; illustrated UI, owner content/assets, real deployment and release evaluations remain pending.
+Implementation includes T001-T028, T030/T036 and T052/T053/T055/T056: cloud foundation, directly tested streaming/privacy/rolling-allowance modules, namespace checks and an avatar reducer. Codespaces provider and isolated Redis checks passed. Owner console observations are recorded in the README, but T029 policy review remains incomplete. The endpoint stays disabled until all US2/US5 and activation gates pass; illustrated UI, approved content/assets, deployment and release evaluations remain pending.
 
 **Revision after clarification**: Incorporates the three owner decisions recorded on 2026-10-28: private-preview then production publication proof, independent latency acceptance in both environments, and sentence-safe 150-word answers preserving mandatory disclosures/contact. Existing SDK research is reused; package compatibility must still be verified during scaffolding.
 

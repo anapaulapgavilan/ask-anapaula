@@ -6,6 +6,7 @@ import { networkIds } from "./network-identity";
 import { languages, type Language } from "./i18n";
 import { getRedisConnection } from "./redis";
 import { getServerEnvironment } from "./env";
+import { redisPrefixSchema } from "./env-schema";
 
 export const questionRecordSchema = z.strictObject({
   question: z.string().refine((value) => selectSafeQuestion(value) === value).nullable(),
@@ -20,7 +21,7 @@ export async function logQuestion(
   input: { question: string; language: Language; ip: string; secret: string; prefix: string },
   write: QuestionWriter,
 ): Promise<string> {
-  if (!/^(production|preview|integration|test)(?::[a-zA-Z0-9_-]+)*$/.test(input.prefix)) {
+  if (!redisPrefixSchema.safeParse(input.prefix).success) {
     throw new Error("QUESTION_LOG_CONFIGURATION_INVALID");
   }
   const record = questionRecordSchema.parse({
