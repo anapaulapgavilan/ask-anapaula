@@ -1,0 +1,61 @@
+{
+  "name": "ask-anapaula",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "test": "vitest run --project=unit",
+    "test:integration": "vitest run --project=integration",
+    "test:e2e": "node scripts/run-browser-tests.mjs",
+    "content:build": "tsx scripts/build-knowledge.ts",
+    "predev": "npm run content:build",
+    "prebuild": "npm run content:build",
+    "pretypecheck": "npm run content:build",
+    "content:check": "tsx scripts/check-content.ts",
+    "content:ready": "tsx scripts/check-content.ts --ready",
+    "evals": "tsx evals/run-evals.ts",
+    "preevals": "npm run content:build",
+    "content:tokens": "tsx scripts/check-tokens.ts",
+    "check:secrets": "tsx scripts/check-secrets.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "4.0.91",
+    "@ai-sdk/react": "4.0.160",
+    "@upstash/redis": "1.40.0",
+    "ai": "7.0.156",
+    "ipaddr.js": "2.5.0",
+    "next": "16.4.3",
+    "next-auth": "5.0.0-beta.32",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1",
+    "server-only": "0.0.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "@tailwindcss/turbopack": "4.3.3",
+    "@types/mdast": "4.0.4",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.3",
+    "remark-parse": "11.0.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "unified": "11.0.5",
+    "vitest": "5.0.5"
+  },
+  "type": "module"
+}

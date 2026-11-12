@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 400 520" width="400" height="520" id="avatar" role="img" aria-label="Avatar ilustrado">
+  <!-- Convención: "izq" y "der" según quien mira la imagen. -->
+  <defs>
+    <clipPath id="clip-ropa">
+      <path d="M176 254 L224 254 L227 284 C244 288 258 296 263 312 C258 345 259 380 264 420 L270 520 L130 520 L136 420 C141 380 142 345 137 312 C142 296 156 288 173 284 Z"/>
+    </clipPath>
+  </defs>
+
+  <g id="fondo" inkscape:groupmode="layer" inkscape:label="fondo">
+    <rect x="0" y="0" width="400" height="520" rx="28" fill="#EFE3D5"/>
+    <circle cx="200" cy="215" r="150" fill="#E3D0BA"/>
+  </g>
+
+  <g id="cuerpo" inkscape:groupmode="layer" inkscape:label="cuerpo (cuello y hombros)">
+    <rect x="185" y="220" width="30" height="44" fill="#D9A27E"/>
+    <path d="M186 236 Q200 246 214 236 L214 250 L186 250 Z" fill="#C98B66"/>
+    <path d="M128 330 C126 302 150 290 178 284 L222 284 C250 290 274 302 272 330 L266 520 L134 520 Z" fill="#D9A27E"/>
+  </g>
+
+  <g id="torso" inkscape:groupmode="layer" inkscape:label="torso (ropa)">
+    <path id="ropa" d="M176 254 L224 254 L227 284 C244 288 258 296 263 312 C258 345 259 380 264 420 L270 520 L130 520 L136 420 C141 380 142 345 137 312 C142 296 156 288 173 284 Z" fill="#4E1F2C"/>
+    <g id="estampado" clip-path="url(#clip-ropa)">
+      <ellipse cx="160" cy="330" rx="11" ry="5" transform="rotate(30 160 330)" fill="#C4733A"/>
+      <ellipse cx="212" cy="318" rx="11" ry="5" transform="rotate(-20 212 318)" fill="#D89A5B"/>
+      <ellipse cx="246" cy="352" rx="11" ry="5" transform="rotate(40 246 352)" fill="#C4733A"/>
+      <ellipse cx="182" cy="382" rx="11" ry="5" transform="rotate(-35 182 382)" fill="#C4733A"/>
+      <ellipse cx="228" cy="398" rx="11" ry="5" transform="rotate(65 228 398)" fill="#D89A5B"/>
+      <ellipse cx="156" cy="440" rx="11" ry="5" transform="rotate(-10 156 440)" fill="#D89A5B"/>
+      <ellipse cx="206" cy="456" rx="11" ry="5" transform="rotate(35 206 456)" fill="#C4733A"/>
+      <ellipse cx="250" cy="478" rx="11" ry="5" transform="rotate(-30 250 478)" fill="#C4733A"/>
+      <ellipse cx="172" cy="502" rx="11" ry="5" transform="rotate(15 172 502)" fill="#C4733A"/>
+      <ellipse cx="200" cy="296" rx="10" ry="4.5" transform="rotate(10 200 296)" fill="#C4733A"/>
+    </g>
+    <path d="M177 264 Q200 270 223 264 M178 274 Q200 280 222 274" stroke="#3A1520" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <g id="accesorios" inkscape:groupmode="layer" inkscape:label="accesorios (correa)">
+    <path d="M246 290 L258 287 L296 520 L283 520 Z" fill="#C98A4B"/>
+    <path d="M258 287 L296 520" stroke="#A86E37" stroke-width="2"/>
+  </g>
+
+  <!-- Brazo que saluda (izquierda de la imagen) -->
+  <g id="brazo-izq" inkscape:groupmode="layer" inkscape:label="brazo-izq" transform="rotate(6 128 308)">
+    <circle cx="128" cy="308" r="17" fill="#D9A27E"/>
+    <path id="brazo-superior-izq" d="M111 312 C111 294 145 294 145 312 L143 398 C143 409 113 409 113 398 Z" fill="#D9A27E"/>
+    <g id="antebrazo-izq" transform="rotate(-4 128 398)">
+      <circle cx="128" cy="398" r="14.5" fill="#CF9572"/>
+      <path d="M113 397 C113 387 143 387 143 397 L140 470 L116 470 Z" fill="#CF9572"/>
+      <g id="mano-izq" inkscape:label="mano-izq">
+        <ellipse cx="140" cy="474" rx="4" ry="9" transform="rotate(-25 140 474)" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="117.5" y="483" width="5.5" height="15" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="123" y="484" width="5.5" height="17" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="128.5" y="484" width="5.5" height="16" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="134" y="482" width="5" height="13" rx="2.5" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <ellipse cx="128" cy="478" rx="13" ry="13" fill="#D9A27E"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Cabeza completa: se inclina como una unidad -->
+  <g id="cabeza-rig" inkscape:label="cabeza-rig" transform="rotate(0 200 255)">
+
+    <g id="cabello-atras" inkscape:groupmode="layer" inkscape:label="cabello-atras">
+      <circle cx="202" cy="88" r="52" fill="#4A2E22"/>
+      <path d="M170 60 Q202 40 236 62" stroke="#6B4530" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="146" cy="128" r="23" fill="#4A2E22"/>
+      <path d="M132 118 Q146 108 160 118" stroke="#6B4530" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="200" cy="170" rx="58" ry="62" fill="#3B241A"/>
+    </g>
+
+    <g id="cabeza" inkscape:groupmode="layer" inkscape:label="cabeza (cara, orejas, nariz, mejillas)">
+      <ellipse cx="151" cy="198" rx="7" ry="11" fill="#CF9572"/>
+      <ellipse cx="249" cy="198" rx="7" ry="11" fill="#CF9572"/>
+      <circle cx="150" cy="214" r="5" fill="none" stroke="#D9A441" stroke-width="1.8"/>
+      <circle cx="250" cy="214" r="5" fill="none" stroke="#D9A441" stroke-width="1.8"/>
+      <path id="cara" d="M150 175 C150 130 172 112 200 112 C228 112 250 130 250 175 C250 215 232 248 200 252 C168 248 150 215 150 175 Z" fill="#D9A27E"/>
+      <g id="mejillas">
+        <ellipse cx="167" cy="213" rx="14" ry="10" fill="#E39A8E" opacity="0.75"/>
+        <ellipse cx="233" cy="213" rx="14" ry="10" fill="#E39A8E" opacity="0.75"/>
+      </g>
+      <path id="nariz" d="M201 190 Q197 207 192 213 Q198 218 205 214" stroke="#B97E5B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <g id="ojos" inkscape:groupmode="layer" inkscape:label="ojos">
+      <g id="ojo-izq">
+        <path d="M165 188 Q178 179 191 188 Q178 197 165 188 Z" fill="#FBF6F0"/>
+        <g id="iris-izq">
+          <circle cx="178" cy="188" r="5.2" fill="#5A3624"/>
+          <circle cx="178" cy="188" r="2.6" fill="#1E120C"/>
+          <circle cx="180" cy="186" r="1.3" fill="#FFFFFF"/>
+        </g>
+      </g>
+      <g id="ojo-der">
+        <path d="M209 188 Q222 179 235 188 Q222 197 209 188 Z" fill="#FBF6F0"/>
+        <g id="iris-der">
+          <circle cx="222" cy="188" r="5.2" fill="#5A3624"/>
+          <circle cx="222" cy="188" r="2.6" fill="#1E120C"/>
+          <circle cx="224" cy="186" r="1.3" fill="#FFFFFF"/>
+        </g>
+      </g>
+    </g>
+
+    <g id="parpados" inkscape:groupmode="layer" inkscape:label="parpados">
+      <path id="parpado-izq" d="M165 188 Q178 179 191 188 Q178 179 165 188 Z" fill="#D9A27E"/>
+      <path id="pliegue-izq" d="M165 188 Q178 179 191 188" stroke="#2E1B12" stroke-width="1.6" fill="none" opacity="0"/>
+      <path id="parpado-der" d="M209 188 Q222 179 235 188 Q222 179 209 188 Z" fill="#D9A27E"/>
+      <path id="pliegue-der" d="M209 188 Q222 179 235 188" stroke="#2E1B12" stroke-width="1.6" fill="none" opacity="0"/>
+      <g id="pestanas" stroke="#2E1B12" stroke-linecap="round" fill="none">
+        <path d="M163 188 Q178 177 193 188" stroke-width="2.4"/>
+        <path d="M207 188 Q222 177 237 188" stroke-width="2.4"/>
+        <path d="M168 183 L165 178 M173 181 L171 175 M178 180 L178 174 M183 181 L185 175 M188 183 L191 178" stroke-width="1.3"/>
+        <path d="M212 183 L209 178 M217 181 L215 175 M222 180 L222 174 M227 181 L229 175 M232 183 L235 178" stroke-width="1.3"/>
+      </g>
+    </g>
+
+    <g id="cejas" inkscape:groupmode="layer" inkscape:label="cejas" stroke="#3B241A" stroke-width="3.2" stroke-linecap="round" fill="none">
+      <path id="ceja-izq" d="M165 169 Q178 161 191 166"/>
+      <path id="ceja-der" d="M209 166 Q222 161 235 169"/>
+    </g>
+
+    <g id="boca" inkscape:groupmode="layer" inkscape:label="boca">
+      <g id="boca-neutral">
+        <path d="M189 231 Q195 227 200 229 Q205 227 211 231 Q200 238 189 231 Z" fill="#C4837A"/>
+        <path d="M189 231 Q200 233 211 231" stroke="#9E5A52" stroke-width="1.2" fill="none"/>
+      </g>
+      <g id="boca-sonrisa" style="display:none">
+        <path d="M185 227 Q200 247 215 227 Q200 232 185 227 Z" fill="#8E3E3C"/>
+        <path d="M188 228.5 Q200 232.5 212 228.5 L211 231 Q200 235 189 231 Z" fill="#FFFFFF"/>
+        <path d="M185 227 Q200 247 215 227" stroke="#B5675F" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+      <g id="boca-pensativa" style="display:none">
+        <path d="M191 233 Q200 229.5 210 231" stroke="#B06F67" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <g id="cabello-frente" inkscape:groupmode="layer" inkscape:label="cabello-frente">
+      <path d="M147 200 C140 140 165 104 200 104 C235 104 260 140 253 200 C250 175 245 155 232 140 C222 130 208 126 200 123 C192 126 178 130 168 140 C155 155 150 175 147 200 Z" fill="#4A2E22"/>
+      <path d="M200 105 L200 123" stroke="#2E1B12" stroke-width="1.5"/>
+      <path d="M190 112 Q168 120 158 150 M210 112 Q232 120 242 150" stroke="#7A5236" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path id="diadema" d="M152 150 C160 110 240 110 248 150" stroke="#D8B48A" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g id="mechones" fill="none" stroke-linecap="round">
+        <path d="M156 150 C148 190 158 230 152 268 C148 295 157 315 151 336" stroke="#4A2E22" stroke-width="7"/>
+        <path d="M157 152 C150 190 160 230 154 268 C150 295 159 315 153 334" stroke="#B88A55" stroke-width="2.2"/>
+        <path d="M244 150 C252 190 242 230 248 268 C252 295 243 315 249 336" stroke="#4A2E22" stroke-width="7"/>
+        <path d="M243 152 C250 190 240 230 246 268 C250 295 241 315 247 334" stroke="#B88A55" stroke-width="2.2"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Brazo que piensa (derecha de la imagen), encima para llegar a la barbilla -->
+  <g id="brazo-der" inkscape:groupmode="layer" inkscape:label="brazo-der" transform="rotate(-6 272 308)">
+    <circle cx="272" cy="308" r="17" fill="#D9A27E"/>
+    <path id="brazo-superior-der" d="M255 312 C255 294 289 294 289 312 L287 398 C287 409 257 409 257 398 Z" fill="#D9A27E"/>
+    <g id="antebrazo-der" transform="rotate(4 272 398)">
+      <circle cx="272" cy="398" r="14.5" fill="#CF9572"/>
+      <path d="M257 397 C257 387 287 387 287 397 L284 470 L260 470 Z" fill="#CF9572"/>
+      <g id="mano-der" inkscape:label="mano-der">
+        <ellipse cx="260" cy="474" rx="4" ry="9" transform="rotate(25 260 474)" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="261" y="482" width="5" height="13" rx="2.5" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="266" y="484" width="5.5" height="16" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="271.5" y="484" width="5.5" height="17" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <rect x="277" y="483" width="5.5" height="15" rx="2.75" fill="#D9A27E" stroke="#B97E5B" stroke-width="0.8"/>
+        <ellipse cx="272" cy="478" rx="13" ry="13" fill="#D9A27E"/>
+      </g>
+    </g>
+  </g>
+</svg>
