@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Ask Ana Paula private preview";
+export const alt = "Ask Ana Paula professional profile";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -21,7 +21,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", color: "#824328", fontSize: 24, fontWeight: 700 }}>
-          PRIVATE PREVIEW
+          PROFESSIONAL PROFILE
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div
@@ -39,7 +39,7 @@ export default function OpenGraphImage() {
           </div>
         </div>
         <div style={{ display: "flex", color: "#625e59", fontSize: 22 }}>
-          AI chat is not yet available
+          Sign in with Google to chat
         </div>
       </div>
     ),

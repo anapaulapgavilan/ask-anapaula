@@ -10,11 +10,17 @@ The application in Spanish, shown on desktop and mobile. These screenshots show 
 
 ![Mobile view of Ask Ana Paula, with the illustrated avatar and suggested questions](docs/images/ask-ana-paula-mobile.png)
 
-**Status update (2026-11-11):** The owner configured and enabled the chat for a protected Production test at [ask-anapaula.vercel.app](https://ask-anapaula.vercel.app), and shared a screenshot of a new answer after redeployment. This single response is not public-launch acceptance: privacy, content, rate-limit, outage, performance, and other release checks remain open. The older deployment observations below describe earlier states, not the current Production configuration.
+## Live application
 
-**Protected Vercel preview:** [branch preview](https://ask-anapaula-git-preview-private-content-review-ana-paula13.vercel.app) was Ready in the Preview environment. Its branch URL and a deployment-specific URL previously redirected unauthenticated visitors to Vercel SSO (HTTP 302). The GitHub repository is private. The Production test above is not a public release.
+[Open Ask Ana Paula](https://ask-anapaula.vercel.app). The website is publicly reachable; signing in with a Google account is required to view the profile and use the chat. Sessions have an absolute 24-hour limit. The [privacy page](https://ask-anapaula.vercel.app/privacy) is available without signing in.
 
-**Preview metadata:** The page has a factual title/description, canonical link to the verified branch preview, and a generated social card that labels the page as a private preview and says chat is unavailable. `robots` remains `noindex`; replace the preview canonical with an owner-approved permanent URL before any public release. The existing Arial/Helvetica and Georgia system font stacks are retained to preserve the reviewed design without a network-dependent build font.
+**Verified in production:** a real Google sign-in, an authenticated streaming chat response, logout, and an unauthenticated chat request returning HTTP 401 with `AUTH_REQUIRED`. The 24-hour boundary is covered by automated tests, not by waiting a full day in production. Vercel Standard Protection keeps previews and deployment URLs protected while allowing access to the production domain.
+
+**Release scope:** public availability does not mean every original acceptance task is complete. Provider/hosting retention review, broader abuse/outage/performance checks, and remaining specification gates are tracked in [implementation tasks](specs/001-ask-ana-paula/tasks.md). No zero-retention or complete-security guarantee is made.
+
+The public source starts from a reviewed snapshot; earlier development history is not included. No CV, photograph, OAuth credential download, or environment secret is included. The screenshots above show the signed-in interface without a conversation.
+
+**Sharing metadata:** canonical and social links point to the production domain and describe Google sign-in. Search indexing remains disabled (`noindex`, `nofollow`); public availability is not approval for search indexing. System font stacks avoid a network-dependent build font.
 
 ## Why I built this
 
@@ -22,12 +28,13 @@ TODO: Ana Paula will supply and approve three sentences about her motivation.
 
 ## How it works
 
-The bilingual professional profile, illustrated avatar UI, strict AI SDK chat client, approved-Markdown compiler, and chat-route controls are implemented. The route requires trusted attribution, a successful rolling allowance claim, and a minimized question write before provider generation. Chat is enabled for the owner's protected Production test; provider/hosting policy review and launch acceptance remain pending:
+The bilingual professional profile, illustrated avatar UI, strict AI SDK chat client, approved-Markdown compiler, and chat-route controls are implemented. Before provider generation, the route requires a Google session, trusted attribution, a successful rolling allowance claim, and a minimized question write. Chat is enabled in production; the remaining review limitations are listed above:
 
 ```mermaid
 flowchart LR
   Owner[Owner-approved Markdown in GitHub] --> Build[Next.js build on Vercel]
-  Visitor[Visitor browser] --> App[Next.js page and chat API]
+  Visitor[Visitor browser] --> Google[Google sign-in]
+  Google --> App[Next.js page and chat API]
   Build --> App
   App --> Limits[Upstash allowance and minimized logs]
   App --> Claude[Anthropic via Vercel AI SDK]
@@ -40,8 +47,8 @@ flowchart LR
 - The owner reviewed and approved the layered avatar and its simulated expressions in a protected preview on 2026-11-11; this visual approval does not constitute public-launch acceptance.
 - Assistant replies render Markdown, including bold text and lists, as they stream. Raw HTML and embedded images are not rendered; copying an answer preserves its original Markdown text.
 - Stable prompt caching and exact rolling rate limits have deterministic and isolated-service tests. Route ordering and failure behavior are contract-tested, but an actual protected preview and live generation are not release guarantees. Full factual/boundary evaluations and deployment acceptance remain release gates.
-- Only owner-approved assets/text are published. The supplied layered avatar illustration, selected professional facts, and four existing public GitHub project links are approved for the protected site; the owner explicitly does not authorize publishing a CV or photo.
-- Development and application verification run only in GitHub Codespaces.
+- Only owner-approved assets/text are published. The supplied layered avatar illustration, selected professional facts, and four existing public GitHub project links are approved for publication; the owner explicitly does not authorize publishing a CV or photo.
+- Codespaces provides the reproducible development environment; Linux CI runs the full automated checks. Some local Windows tests require symlink permissions.
 
 ## What I learned
 
@@ -55,11 +62,11 @@ First complete the reviewed written-chat and illustrated-avatar release. Voice (
 
 Open this repository in Codespaces. The Node 24 devcontainer installs locked dependencies and Chromium with its operating-system dependencies. Port 3000 is private. Do not copy private CVs or questionnaires here.
 
-### Google sign-in preparation
+### Google sign-in
 
-Google sign-in is not yet a public launch. When configured, the page and chat API require a Google session with an absolute 24-hour limit. The site uses an encrypted session cookie without a user database; logout clears this browser's cookie, but cannot revoke a copied stateless cookie before expiry. The unauthenticated `/privacy` page describes the processing.
+The production page and chat API require a Google session with an absolute 24-hour limit. The site uses an encrypted session cookie without a user database; logout clears this browser's cookie, but cannot revoke a copied stateless cookie before expiry. The unauthenticated `/privacy` page describes the processing.
 
-Configure `AUTH_MODE=google`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, an independent random `AUTH_SECRET` of at least 32 bytes, and `AUTH_URL` (the exact HTTPS origin) through the hosting provider, never in the repository. Production requires `AUTH_MODE=google` and `AUTH_URL` to match `NEXT_PUBLIC_SITE_URL`; missing or invalid configuration fails closed. In a Google-enabled preview, use the configured `AUTH_URL` origin to access both the page and chat rather than a different deployment alias. Configure the Google OAuth web client callback as `<AUTH_URL>/api/auth/callback/google`. Use separate credentials and secrets for preview and production. Keep Vercel deployment protection enabled until an actual Google login, expiry, logout and chat access have been tested in a protected deployment and the outstanding privacy and release checks are complete.
+Configure `AUTH_MODE=google`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`, an independent random `AUTH_SECRET` of at least 32 bytes, and `AUTH_URL` (the exact HTTPS origin) through the hosting provider, never in the repository. Production requires `AUTH_MODE=google` and `AUTH_URL` to match `NEXT_PUBLIC_SITE_URL`; missing or invalid configuration fails closed. In a Google-enabled preview, use the configured `AUTH_URL` origin to access both the page and chat rather than a different deployment alias. Configure the Google OAuth web client callback as `<AUTH_URL>/api/auth/callback/google`. Use separate credentials and secrets for preview and production. Keep previews protected by Vercel; do not make an older auth-disabled deployment public. Production uses `https://ask-anapaula.vercel.app/api/auth/callback/google`.
 
 The regular mocked browser suite uses the default unauthenticated development mode. CI separately exercises the Google gate with synthetic sessions. A synthetic test is not a real Google OAuth or production acceptance test.
 
@@ -87,11 +94,17 @@ Owner review (2026-11-10): the owner confirmed the protected preview looks good,
 
 `.github/workflows/ci.yml` runs secretless lint, type, unit/contract, content, mocked-browser, and build checks on pull requests. It never gives model credentials to proposed PR code. `.github/workflows/model-evaluation.yml` permits a manual evaluation only from `main`, checks out the exact `main` revision, and uses the `approved-evals` environment. Do not dispatch it from an unreviewed branch. The environment contains `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`; its deployment branch rule is now saved as **Selected branches and tags: `main`**. Do not use `refs/pull/*/merge`.
 
-GitHub does not offer required environment reviewers for this private repository on the current plan. The active **Protect main** ruleset targets the default branch, requires a pull request, one independent approval, dismissal of stale approvals, approval of the latest reviewable push, resolved conversations, and the `quality` status check; it blocks force pushes and deletion. A trusted reviewer with repository access must approve before merging. Fork PR evaluation is blocked; review fork changes without secrets, then reproduce accepted changes on a maintainer-controlled branch and open an ordinary PR. Never treat a skipped or blocked model evaluation as a pass. The model workflow does not evaluate a PR's exact candidate revision; the PR must first be approved and merged before a manual evaluation of `main`.
+Protect `main` with a required pull request, resolved conversations, the `quality` check, and blocked force pushes/deletion. The personal-project policy does not require an independent approval. Fork PR evaluation is blocked; review fork changes without secrets, then reproduce accepted changes on a maintainer-controlled branch and open an ordinary PR. Never treat a skipped or blocked model evaluation as a pass. The model workflow does not evaluate a PR's exact candidate revision; the PR must first be reviewed and merged before a manual evaluation of `main`.
 
-`npm run check:secrets` scans tracked and non-ignored files plus `.next/static` and `.next/server` output for common credential formats and private document types. Findings report paths, line numbers, and rule names only; credential contents are never printed. CI runs it after the production build.
+`npm run check:secrets` scans tracked and non-ignored text files plus `.next/static` and `.next/server` output for common credential formats. Findings report paths, line numbers, and rule names only; credential contents are never printed. CI runs it after the production build. This scanner is not an exhaustive history, OAuth-file, or binary-document audit; review the actual publication inventory separately.
 
-Set secrets through Codespaces/Vercel settings, never committed files or command history. The ten blank names are in [.env.example](.env.example). `CHAT_ENABLED` defaults to disabled and must remain false until the protected-preview gate is verified.
+Set secrets through Codespaces/Vercel settings, never committed files or command history. The fifteen blank names are in [.env.example](.env.example). Google credential downloads matching `client_secret_*.json` are ignored, but ignoring a file does not remove an already committed secret. `CHAT_ENABLED` defaults to disabled for new installations; enable it only after configuring and checking that deployment.
+
+The public snapshot does not inherit GitHub secrets or evaluation-environment credentials from a private repository. Keep `approved-evals` restricted to `main` and add a trusted human approval gate before provisioning model credentials. Until then, paid evaluations are unavailable, not passed.
+
+## Historical implementation notes
+
+The sections below record earlier checkpoints, approvals, service observations, and test counts. Statements about disabled chat, private-only content, missing environment variables, or All Deployments protection describe those earlier checkpoints, not the current production state. See **Live application** above for the current status. Historical checks do not close remaining specification tasks.
 
 ### Stage 1 verification
 
