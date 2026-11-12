@@ -2,6 +2,15 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { chatRequests, installChatMock } from "./support/chat-mock";
 
+test("shares production metadata without enabling search indexing", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://ask-anapaula.vercel.app");
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Sign in with Google/);
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", "https://ask-anapaula.vercel.app");
+  await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute("content", "Ask Ana Paula professional profile");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+});
+
 for (const width of [360, 1280]) {
   test(`setup remains honest and accessible at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

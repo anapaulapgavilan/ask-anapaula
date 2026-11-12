@@ -43,6 +43,7 @@ yarn-error.log*
 *.key
 *.p12
 *.pfx
+client_secret_*.json
 *.tmp
 *.swp
 Thumbs.db

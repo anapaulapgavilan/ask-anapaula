@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 
-const previewUrl = new URL(
-  "https://ask-anapaula-git-preview-private-content-review-ana-paula13.vercel.app",
-);
+const siteUrl = new URL("https://ask-anapaula.vercel.app");
 const title = "Ask Ana Paula | Professional profile";
 const description =
-  "A bilingual professional profile of Ana Paula Pérez-Gavilán Pliego. AI chat is not yet available.";
+  "A bilingual professional profile of Ana Paula Pérez-Gavilán Pliego. Sign in with Google to explore the profile and AI chat.";
 
 export const metadata: Metadata = {
-  metadataBase: previewUrl,
+  metadataBase: siteUrl,
   title,
   description,
   alternates: { canonical: "/" },
@@ -20,7 +18,7 @@ export const metadata: Metadata = {
     siteName: "Ask Ana Paula",
     title,
     description,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Ask Ana Paula private preview" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Ask Ana Paula professional profile" }],
   },
   twitter: {
     card: "summary_large_image",
